@@ -14,13 +14,13 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
     }
     public class GetRecipes extends AsyncTask<Void, Void, String[]>{
-        String[] recepieNames = new String[13];
+        String[] recepeNames = new String[13];
         @Override
         protected String[] doInBackground(Void... voids) {
             try{
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUrl);
-                recepieNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
-                return recepieNames;
+                recepeNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
+                return recepeNames;
             }catch (Exception e){
                 e.printStackTrace();
             }
