@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollViewandroid.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v7.app.AlertController.RecycleListView
+    android:layout_height="match_parent"
+    android:elevation="16dp">
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycler_view_tablet">
-    </android.support.v7.app.AlertController.RecycleListView>
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view_tablet"/>
+    </FrameLayout>
+
+</ScrollViewandroid.support.constraint.ConstraintLayout>
