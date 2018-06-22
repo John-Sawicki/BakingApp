@@ -21,19 +21,18 @@ public class RecipeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
     public class GetRecipes extends AsyncTask<Void, Void, String[]>{
-        String[] recepeNames = new String[13];
+        String[] recipeNames = new String[13];
         @Override
         protected String[] doInBackground(Void... voids) {
             try{
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUrl);
-                recepeNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
-                return recepeNames;
+                recipeNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
+                return recipeNames;
             }catch (Exception e){
                 e.printStackTrace();
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String[] strings) {
             //TODO populate adapter
