@@ -25,13 +25,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
             mRecipeTV = view.findViewById(R.id.recipe_text_view);
             view.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View view) {
             int itemClicked = getAdapterPosition();
             String selectedRecipe = mRecipes[itemClicked];
             mClickListener.onClick(selectedRecipe);
-
         }
     }
     @Override
