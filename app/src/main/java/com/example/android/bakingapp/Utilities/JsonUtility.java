@@ -27,6 +27,7 @@ public class JsonUtility {
                 Log.d("response from site", "url has input");
                 return scanner.next();  //returns a string if it works
             } else {
+                Log.d("response from site", "no response");
                 return null;
             }
         } finally {
@@ -35,13 +36,13 @@ public class JsonUtility {
     }
     public static String[] getRecipeJSON(String rawJSON) throws JSONException{
         String mRawJSON = rawJSON;
-        String[] recipes = new String[13];
+        String[] recipes = new String[4];
         try{
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             for(int i = 0; i<recipes.length;i++){
                 JSONObject recipeJSON = recipesJSON.getJSONObject(i);
                 recipes[i]= recipeJSON.getString("name");
-                Log.d("recipeName", recipes[i]);
+                Log.d("recipeNameUtil", recipes[i]);
             }
             return recipes;
         }catch (Exception e){

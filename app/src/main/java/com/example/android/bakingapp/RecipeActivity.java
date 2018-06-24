@@ -30,42 +30,48 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
        // mRecyclerView =findViewById(R.id.recycler_view);
+        Configuration config = getResources().getConfiguration();
+        /*
+        if(config.smallestScreenWidthDp >=600){
+            //set columns to 4
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
+        }else {
+            //set columns to 1
+
+        }
+        */
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecipeAdapter=new RecipeAdapter(this);
         mRecyclerView.setAdapter(mRecipeAdapter);
-        Configuration config = getResources().getConfiguration();
-        if(config.smallestScreenWidthDp >=600){
-            //set columns to 4
-        }else {
-            //set columns to 1
-        }
-
-
+        new GetRecipes().execute();
     }
-
     @Override
     public void onClick(int index) {
         Log.d("recipeAct", index+"");
     }
 
     public class GetRecipes extends AsyncTask<Void, Void, String[]>{
-        String[] recipeNames = new String[13];
+        String[] recipeNames = new String[4];
         @Override
         protected String[] doInBackground(Void... voids) {
             try{
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUrl);
+                Log.d("jsonRaw", jsonStringFromWeb);
                 recipeNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
+                Log.d("recipeNameGet", recipeNames[1]);
                 return recipeNames;
             }catch (Exception e){
                 e.printStackTrace();
+                return null;
             }
-            return null;
         }
         @Override
         protected void onPostExecute(String[] strings) {
             //TODO populate adapter
+            //Log.d("RecipeNamePost", strings[1]);
+            mRecipeAdapter.updateRecipes(strings);
             super.onPostExecute(strings);
         }
     }

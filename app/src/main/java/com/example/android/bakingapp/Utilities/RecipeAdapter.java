@@ -13,7 +13,7 @@ import com.example.android.bakingapp.R;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterVH> {
-    private String[] mRecipes = {"cake","cookies", "pie" };
+    private String[] mRecipes = {"cake","cookies", "pie","cake" };
     final private  RecipeOnClickListener mClickListener;
     public RecipeAdapter(RecipeOnClickListener clickListener){
         mClickListener = clickListener;
@@ -37,6 +37,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
     }
     @Override
     public int getItemCount() {
+        if(mRecipes==null) return 0;
         return mRecipes.length;
     }
 
@@ -53,7 +54,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
             mClickListener.onClick(itemClicked);
         }
     }
-
+    public void updateRecipes(String[] jsonRceipes){
+        mRecipes = jsonRceipes;
+        notifyDataSetChanged();
+    }
 
 
 }
