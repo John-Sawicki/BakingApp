@@ -52,7 +52,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
     public void onClick(int index) {
         Log.d("recipeAct", index+"");
         Intent intent = new Intent(RecipeActivity.this, RecipeDetail.class);
-        intent.putExtra("jsonIndex", index);
+        intent.putExtra("jsonIndex", index);    //send the index of the recipes clicked to detail activity
         startActivity(intent);
     }
 
