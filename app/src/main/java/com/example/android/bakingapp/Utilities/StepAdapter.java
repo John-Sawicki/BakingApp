@@ -2,6 +2,7 @@ package com.example.android.bakingapp.Utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import com.example.android.bakingapp.R;
 import java.util.List;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH> {
-    private String[] steps = {"preheat oven", "mix ingredients", "shale and bake"};
+    private String[] steps = new String[20];    //array longer than number of steps in json
+
     private final StepOnClickInterface mStepOnClickListener;
     public StepAdapter(StepOnClickInterface clickInterface){
+        steps[0]= "preheat oven"; steps[1]= "mix ingredients"; steps[2]="shake and bake";
         mStepOnClickListener = clickInterface;
     }
     public interface StepOnClickInterface{
@@ -33,31 +36,32 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH>
     @Override
     public void onBindViewHolder(StepAdapterVH holder, int position) {
             String step = steps[position];
-            holder.mRecipeTV.setText(step);
-    }
-
-    @Override
-    public void onBindViewHolder(StepAdapterVH holder, int position, List<Object> payloads) {
-        super.onBindViewHolder(holder, position, payloads);
+            if(step!=null){ //recipes have different number of steps. only add text if the string exists
+                Log.d("stepBind", step);
+                holder.mRecipeTV.setText(step);
+            }
     }
     @Override
     public int getItemCount() {
-        return 0;
+        if(steps==null) return 0;
+        return steps.length;
     }
-
     public class StepAdapterVH extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final TextView mRecipeTV;
-        private StepAdapterVH(View view){
+        public StepAdapterVH(View view){
             super(view);
             mRecipeTV = view.findViewById(R.id.recipe_text_view);
             view.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View view) {
             int stepClicked = getAdapterPosition();
             mStepOnClickListener.onClick(stepClicked);
         }
+    }
+    public void updateSteps(String[] jsonSteps){
+        steps = jsonSteps;
+        notifyDataSetChanged();
     }
 }
 

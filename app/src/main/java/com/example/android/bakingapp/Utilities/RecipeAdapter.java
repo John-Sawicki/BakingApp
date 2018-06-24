@@ -54,8 +54,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
             mClickListener.onClick(itemClicked);
         }
     }
-    public void updateRecipes(String[] jsonRceipes){
-        mRecipes = jsonRceipes;
+    public void updateRecipes(String[] jsonRecipes){
+        mRecipes = jsonRecipes;
         notifyDataSetChanged();
     }
 

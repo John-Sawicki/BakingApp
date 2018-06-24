@@ -1,6 +1,7 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,9 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
     @Override
     public void onClick(int index) {
         Log.d("recipeAct", index+"");
+        Intent intent = new Intent(RecipeActivity.this, RecipeDetail.class);
+        intent.putExtra("jsonIndex", index);
+        startActivity(intent);
     }
 
     public class GetRecipes extends AsyncTask<Void, Void, String[]>{
