@@ -7,13 +7,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.bakingapp.RecipeActivity"
     android:elevation="16dp">
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ButterKnife!"
+            android:id="@+id/butterknife"/>
          <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
             android:numColumns="1"/>
-    </FrameLayout>
+    </LinearLayout>
 </ScrollView>

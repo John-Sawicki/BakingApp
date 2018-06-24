@@ -1,6 +1,9 @@
 package com.example.android.bakingapp.Utilities;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,17 +13,36 @@ import com.example.android.bakingapp.R;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterVH> {
-    String[] mRecipes = {"cake","cookies", "pie" };
-    private final RecipeOnClickListener mClickListener;
-    public interface RecipeOnClickListener{
-        void onClick(String recipe);
-    }
+    private String[] mRecipes = {"cake","cookies", "pie" };
+    final private  RecipeOnClickListener mClickListener;
     public RecipeAdapter(RecipeOnClickListener clickListener){
-            mClickListener = clickListener;
+        mClickListener = clickListener;
     }
+    public interface RecipeOnClickListener{
+        void onClick(int index);
+    }
+    @Override
+    public RecipeAdapterVH onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context =parent.getContext();
+        int recipeLayout = R.layout.recipe_text_layout;
+        LayoutInflater inflater =LayoutInflater.from(context);
+         View view = inflater.inflate(recipeLayout,parent, false);
+        return new RecipeAdapterVH(view);
+    }
+    @Override
+    public void onBindViewHolder(RecipeAdapterVH holder, int position) {
+        String recipeBind = mRecipes[position];
+        Log.d("recipeBind", recipeBind);
+        holder.mRecipeTV.setText(recipeBind);
+    }
+    @Override
+    public int getItemCount() {
+        return mRecipes.length;
+    }
+
     public class RecipeAdapterVH extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private final TextView mRecipeTV;
-        private RecipeAdapterVH(View view){
+        public final TextView mRecipeTV;
+        public RecipeAdapterVH(View view){
             super(view);
             mRecipeTV = view.findViewById(R.id.recipe_text_view);
             view.setOnClickListener(this);
@@ -28,22 +50,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         @Override
         public void onClick(View view) {
             int itemClicked = getAdapterPosition();
-            String selectedRecipe = mRecipes[itemClicked];
-            mClickListener.onClick(selectedRecipe);
+            mClickListener.onClick(itemClicked);
         }
     }
-    @Override
-    public RecipeAdapterVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
 
-    @Override
-    public void onBindViewHolder(RecipeAdapterVH holder, int position) {
 
-    }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
 }
