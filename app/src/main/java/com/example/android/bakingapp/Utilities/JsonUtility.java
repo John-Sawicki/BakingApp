@@ -80,14 +80,29 @@ public class JsonUtility {
             JSONArray stepArray = recipeJSON.getJSONArray("steps");
             for(int i = 0; i<stepArray.length(); i++) {
                 JSONObject oneStep = stepArray.getJSONObject(i);   //get first ingredient
-               steps[i] = oneStep.getString("shortDescription");
-               Log.d("stepsUtility", steps[i]);
-               //steps[i]+="\n"+oneStep.getString("description");
+                steps[i] = oneStep.getString("shortDescription");
+                Log.d("stepsUtility", steps[i]);
+                //steps[i]+="\n"+oneStep.getString("description");
             }
-                return steps;
+            return steps;
         }catch (Exception e){
             e.printStackTrace(); return null;
-
+        }
+    }
+    public static String getStepsLong(String rawJSON, int selectedRecipe, int selectedStep) throws JSONException{
+        String mRawJSON = rawJSON;
+        String step;
+        try {
+            JSONArray recipesJSON = new JSONArray(mRawJSON);
+            JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe
+            JSONArray stepArray = recipeJSON.getJSONArray("steps");
+            JSONObject oneStep = stepArray.getJSONObject(selectedStep);
+            step = oneStep.getString("description");
+            Log.d("stepsUtility", step);
+            return step;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 

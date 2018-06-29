@@ -37,10 +37,9 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(mStepAdapter);
         //mStepAdapter.updateSteps(stepDummy);    //test dummy data before json
-        //new getIngredients().execute();
         Log.d("recipeNumber",recipeNumber+"");
         new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
-
+        new getIngredients().execute(recipeNumber);
         Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
     }
 
@@ -48,12 +47,20 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
     public void onClick(int index) {
         Log.d("recipeDetailClick", index+"");
     }
-    public class getIngredients extends AsyncTask<Void, Void, String >{
+    public class getIngredients extends AsyncTask<Integer, Void, String >{
         String ingredients = new String();
 
         @Override
-        protected String doInBackground(Void... voids) {
-            return null;
+        protected String doInBackground(Integer... integers) {
+            try{
+                int recipeInt = integers[0];
+                String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
+                ingredients = JsonUtility.getIngrediants(jsonStringFromWeb, recipeInt);
+                return ingredients;
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
