@@ -89,16 +89,18 @@ public class JsonUtility {
             e.printStackTrace(); return null;
         }
     }
-    public static String getStepsLong(String rawJSON, int selectedRecipe, int selectedStep) throws JSONException{
+    public static String[] getStepsLong(String rawJSON, int selectedRecipe, int selectedStep) throws JSONException{
         String mRawJSON = rawJSON;
-        String step;
+        String step[] = new String[2];//first element is long description second is movie url
         try {
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe
             JSONArray stepArray = recipeJSON.getJSONArray("steps");
             JSONObject oneStep = stepArray.getJSONObject(selectedStep);
-            step = oneStep.getString("description");
-            Log.d("stepsUtility", step);
+            step[0] = oneStep.getString("description");
+            step[1] = oneStep.getString("videoURL");
+            Log.d("stepsUtilityDes", step[0]);
+            Log.d("stepsUtilityURL", step[1]);
             return step;
         }catch (Exception e){
             e.printStackTrace();

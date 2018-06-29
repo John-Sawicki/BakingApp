@@ -46,6 +46,10 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
     @Override
     public void onClick(int index) {
         Log.d("recipeDetailClick", index+"");
+        Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
+        intent.putExtra("recipeIndex",recipeNumber);
+        intent.putExtra("stepIndex", index);
+        startActivity(intent);
     }
     public class getIngredients extends AsyncTask<Integer, Void, String >{
         String ingredients = new String();
