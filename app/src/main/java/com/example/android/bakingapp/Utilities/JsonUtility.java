@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class JsonUtility {
+    public static String JsonUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     public static String getResponseFromSite(String stringUrl)throws IOException {
         Uri builtUri = Uri.parse(stringUrl);
         URL url = new URL(builtUri.toString());
@@ -70,7 +71,7 @@ public class JsonUtility {
             e.printStackTrace(); return null;
         }
     }
-    public static String[] getSteps(String rawJSON, int selectedRecipe) throws JSONException{
+    public static String[] getStepsShort(String rawJSON, int selectedRecipe) throws JSONException{
         String mRawJSON = rawJSON;
         String[] steps = new String[20];
         try {
@@ -80,13 +81,12 @@ public class JsonUtility {
             for(int i = 0; i<stepArray.length(); i++) {
                 JSONObject oneStep = stepArray.getJSONObject(i);   //get first ingredient
                steps[i] = oneStep.getString("shortDescription");
-               steps[i]+="\n"+oneStep.getString("description");
+               Log.d("stepsUtility", steps[i]);
+               //steps[i]+="\n"+oneStep.getString("description");
             }
                 return steps;
         }catch (Exception e){
             e.printStackTrace(); return null;
-
-
 
         }
     }

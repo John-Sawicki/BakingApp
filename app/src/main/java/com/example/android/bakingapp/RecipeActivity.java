@@ -52,7 +52,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
     public void onClick(int index) {
         Log.d("recipeAct", index+"");
         Intent intent = new Intent(RecipeActivity.this, RecipeDetail.class);
-        intent.putExtra("jsonIndex", index);    //send the index of the recipes clicked to detail activity
+        intent.putExtra("recipeIndex", index);    //send the index of the recipes clicked to detail activity
         startActivity(intent);
     }
 
@@ -61,7 +61,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         @Override
         protected String[] doInBackground(Void... voids) {
             try{
-                String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUrl);
+                String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 Log.d("jsonRaw", jsonStringFromWeb);
                 recipeNames = JsonUtility.getRecipeJSON(jsonStringFromWeb);
                 Log.d("recipeNameGet", recipeNames[1]);

@@ -50,7 +50,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH>
         public final TextView mRecipeTV;
         public StepAdapterVH(View view){
             super(view);
-            mRecipeTV = view.findViewById(R.id.recipe_text_view);
+            mRecipeTV = view.findViewById(R.id.step_text_view);
             view.setOnClickListener(this);
         }
         @Override

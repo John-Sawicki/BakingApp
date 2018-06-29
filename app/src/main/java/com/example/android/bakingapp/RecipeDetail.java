@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.android.bakingapp.Utilities.JsonUtility;
 import com.example.android.bakingapp.Utilities.StepAdapter;
 
 import butterknife.BindView;
@@ -19,22 +20,26 @@ import butterknife.ButterKnife;
 
 public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepOnClickInterface {
     @BindView(R.id.detail_ingredients)TextView ingredientsText;
-    @BindView(R.id.detail_steps)RecyclerView stepsRecyclerView;
-    @BindView(R.id.next_button)Button nextButton;
+    @BindView(R.id.step_recycler_view)RecyclerView stepsRecyclerView;
     private StepAdapter mStepAdapter;
+    private int recipeNumber;
+    String[] stepDummy = {"1","2","3","4","5","1","2","3","4","5","1","2","3","4","5","1","2","3","4","5"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
-        Configuration config = getResources().getConfiguration();
+        recipeNumber = getIntent().getIntExtra("recipeIndex", 0);
+        Configuration config = getResources().getConfiguration();//use to set up video and instructions
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mStepAdapter = new StepAdapter(this);
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(mStepAdapter);
-        new getIngredients().execute();
-
+        //mStepAdapter.updateSteps(stepDummy);    //test dummy data before json
+        //new getIngredients().execute();
+        Log.d("recipeNumber",recipeNumber+"");
+        new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
 
         Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
     }
@@ -61,7 +66,15 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
 
         @Override
         protected String[] doInBackground(Integer... integers) {
-            return null;
+            try{
+                int recipeInt = integers[0];
+                String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
+                steps = JsonUtility.getStepsShort(jsonStringFromWeb,recipeInt);
+                return steps;
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
