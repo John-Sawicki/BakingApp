@@ -1,5 +1,7 @@
 package com.example.android.bakingapp;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ public class RecipeStepDetail extends AppCompatActivity {
     @BindView(R.id.instruction_text)TextView instructionText;
     @BindView(R.id.next_button) Button nextButton;
     int recipeIndex, stepIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,11 @@ public class RecipeStepDetail extends AppCompatActivity {
         Log.d("recipeNumber",recipeIndex+"");
         stepIndex = getIntent().getIntExtra("stepIndex",1);
         Log.d("stepNumber",stepIndex+"");
+        StepFragment stepFragment = new StepFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.movie_step_fragment, stepFragment);
+        ft.commit();
     }
 
 }
