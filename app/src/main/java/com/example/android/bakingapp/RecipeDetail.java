@@ -36,7 +36,8 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         mStepAdapter = new StepAdapter(this);
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(mStepAdapter);
-        //mStepAdapter.updateSteps(stepDummy);    //test dummy data before json
+        //mStepAdapter.updateSteps(stepDummy);
+        // test dummy data before json
         Log.d("recipeNumber",recipeNumber+"");
         new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
         new getIngredients().execute(recipeNumber);
@@ -48,7 +49,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         Log.d("recipeDetailClick", index+"");
         Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
         intent.putExtra("recipeIndex",recipeNumber);
-        intent.putExtra("stepIndex", index);
+        intent.putExtra("stepIndex", index);    //step number for long description and movie
         startActivity(intent);
     }
     public class getIngredients extends AsyncTask<Integer, Void, String >{
@@ -66,7 +67,6 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
                 return null;
             }
         }
-
         @Override
         protected void onPostExecute(String s) {
             ingredientsText.setText(s);
@@ -74,7 +74,6 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
     }
     public class getSteps extends AsyncTask<Integer, Void, String[]>{
         String[] steps = new String[20];    //there will be less than 20 steps
-
         @Override
         protected String[] doInBackground(Integer... integers) {
             try{
@@ -87,7 +86,6 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
                 return null;
             }
         }
-
         @Override
         protected void onPostExecute(String[] s) {
             mStepAdapter.updateSteps(s);
