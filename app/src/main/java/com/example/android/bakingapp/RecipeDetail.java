@@ -5,11 +5,9 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.Utilities.JsonUtility;
@@ -60,7 +58,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             try{
                 int recipeInt = integers[0];
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
-                ingredients = JsonUtility.getIngrediants(jsonStringFromWeb, recipeInt);
+                ingredients = JsonUtility.getIngredients(jsonStringFromWeb, recipeInt);
                 return ingredients;
             }catch (Exception e){
                 e.printStackTrace();

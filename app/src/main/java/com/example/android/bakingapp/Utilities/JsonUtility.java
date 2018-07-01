@@ -50,7 +50,7 @@ public class JsonUtility {
             e.printStackTrace(); return null;
         }
     }
-    public static String getIngrediants(String rawJSON, int selectedRecipe) throws JSONException{
+    public static String getIngredients(String rawJSON, int selectedRecipe) throws JSONException{
         String mRawJSON = rawJSON;
         int mSelectedRecipe = selectedRecipe;   //only retries the ingredients for the recipe that was clicked
         String ingredients="", quantity, measure, ingredient;
