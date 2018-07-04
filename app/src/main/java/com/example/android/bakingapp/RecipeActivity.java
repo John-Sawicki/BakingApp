@@ -22,9 +22,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
     private static String JsonUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     @BindView(R.id.recycler_view)RecyclerView mRecyclerView;
     @BindView(R.id.butterknife) TextView butterText;
-    //private RecyclerView mRecyclerView;
     private RecipeAdapter mRecipeAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +36,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
             GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         }else {
             //set columns to 1
-
         }
         */
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
@@ -55,7 +52,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         intent.putExtra("recipeIndex", index);    //send the index of the recipes clicked to detail activity
         startActivity(intent);
     }
-
     public class GetRecipes extends AsyncTask<Void, Void, String[]>{
         String[] recipeNames = new String[4];
         @Override

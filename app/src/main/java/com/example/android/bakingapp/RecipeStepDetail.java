@@ -1,11 +1,12 @@
 package com.example.android.bakingapp;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,8 +20,9 @@ public class RecipeStepDetail extends AppCompatActivity {
     @BindView(R.id.no_video_image)ImageView noVideoImage;
     @BindView(R.id.instruction_text)TextView instructionText;
     @BindView(R.id.next_button) Button nextButton;
-    int recipeIndex, stepIndex;
-
+    int recipeIndex; //ex brownies, this stays the same in this activity
+    int stepIndex;  //ex step 2; increment to go to the next step by replacing a fragment
+    StepFragment stepFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +33,17 @@ public class RecipeStepDetail extends AppCompatActivity {
         stepIndex = getIntent().getIntExtra("stepIndex",1);
         Log.d("stepNumber",stepIndex+"");
         StepFragment stepFragment = new StepFragment();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.movie_step_fragment, stepFragment);
-        ft.commit();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().add(R.id.movie_step_fragment, stepFragment).commit();
+
+
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
 }

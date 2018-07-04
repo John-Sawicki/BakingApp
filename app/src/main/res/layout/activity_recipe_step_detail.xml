@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.android.bakingapp.RecipeStepDetail">
-    <fragment
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
         android:id="@+id/movie_step_fragment">
-    </fragment>
+    </FrameLayout>
 
     <Button
         android:layout_width="match_parent"
