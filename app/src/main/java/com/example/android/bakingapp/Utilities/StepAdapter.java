@@ -15,7 +15,7 @@ import java.util.List;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH> {
     private String[] steps = new String[20];    //array longer than number of steps in json
 
-    private final StepOnClickInterface mStepOnClickListener;
+    final private StepOnClickInterface mStepOnClickListener;
     public StepAdapter(StepOnClickInterface clickInterface){
         steps[0]= "preheat oven"; steps[1]= "mix ingredients"; steps[2]="shake and bake";
         mStepOnClickListener = clickInterface;

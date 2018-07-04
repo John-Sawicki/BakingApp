@@ -27,7 +27,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
-        recipeNumber = getIntent().getIntExtra("recipeIndex", 0);
+        recipeNumber = getIntent().getIntExtra("recipeIndex", 0);   //pass this value to RecipeStepDetail
         Configuration config = getResources().getConfiguration();//use to set up video and instructions
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
