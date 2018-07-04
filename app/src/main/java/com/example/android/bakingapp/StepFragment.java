@@ -66,6 +66,7 @@ public class StepFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
             step_movie.setPlayer(mExoPlayer);
             mExoPlayer.prepare(mediaSource);
+
             mExoPlayer.setPlayWhenReady(true);
         }catch (Exception e){
             Log.e("MainAcvtivity", " exoplayer error " + e.toString());
