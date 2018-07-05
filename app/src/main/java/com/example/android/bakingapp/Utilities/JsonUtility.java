@@ -53,7 +53,7 @@ public class JsonUtility {
     public static String getIngredients(String rawJSON, int selectedRecipe) throws JSONException{
         String mRawJSON = rawJSON;
         int mSelectedRecipe = selectedRecipe;   //only retries the ingredients for the recipe that was clicked
-        String ingredients="List of Ingredients"+"\n", quantity, measure, ingredient;
+        String ingredients="", quantity, measure, ingredient;
         try{
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe

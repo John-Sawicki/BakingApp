@@ -14,8 +14,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ButterKnife!"
-            android:id="@+id/butterknife"/>
+            android:text="List of Recipes"
+            android:id="@+id/recipe_title_text"
+            style="@style/title"/>
          <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

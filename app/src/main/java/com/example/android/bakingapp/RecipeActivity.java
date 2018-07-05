@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.RecipeOnClickListener{
     private static String JsonUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
-    @BindView(R.id.butterknife) TextView butterText;
     @BindView(R.id.recycler_view)RecyclerView mRecyclerView;
     private RecipeAdapter mRecipeAdapter;
     @Override

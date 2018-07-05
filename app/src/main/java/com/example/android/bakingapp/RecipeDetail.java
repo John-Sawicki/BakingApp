@@ -28,7 +28,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
         recipeNumber = getIntent().getIntExtra("recipeIndex", 0);   //pass this value to RecipeStepDetail
-        Configuration config = getResources().getConfiguration();//use to set up video and instructions
+        //Configuration config = getResources().getConfiguration();//use to set up video and instructions
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mStepAdapter = new StepAdapter(this);
@@ -39,13 +39,14 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         Log.d("recipeNumber",recipeNumber+"");
         new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
         new getIngredients().execute(recipeNumber);
-        Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
+        //Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
     }
 
     @Override
     public void onClick(int index) {
-        Log.d("recipeDetailClick", index+"");
         Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
+        Log.d("recipeNumberDetail", recipeNumber+"");
+        Log.d("recipeDetailClick", index+"");
         intent.putExtra("recipeIndex",recipeNumber);
         intent.putExtra("stepIndex", index);    //step number for long description and movie
         startActivity(intent);

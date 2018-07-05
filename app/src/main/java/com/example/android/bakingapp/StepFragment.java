@@ -33,7 +33,7 @@ import butterknife.Unbinder;
 
 public class StepFragment extends Fragment {
     @BindView(R.id.step_movie)SimpleExoPlayerView step_movie;
-    @BindView(R.id.no_video_image)ImageView no_video_image;
+    @BindView(R.id.no_video_text)TextView no_video_text;
     @BindView(R.id.instruction_text)TextView instruction_text;
     //SimpleExoPlayer step_movie;
    // ImageView no_video_image;
@@ -43,7 +43,7 @@ public class StepFragment extends Fragment {
     private Unbinder mUnbinder;
     int mRecipeIndex=0; //ex brownies, this stays the same in this activity
     int mStepIndex=0;  //ex step 2; increment to go to the next step by replacing a fragment
-    int[] stepFragIntIndex ={0,0};
+    int[] stepFragRecipeStepValues ={0,0};
     String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
     public StepFragment( ){
 
@@ -57,40 +57,48 @@ public class StepFragment extends Fragment {
         //no_video_image = view.findViewById(R.id.no_video_image);
         //instruction_text = view.findViewById(R.id.instruction_text);
         mUnbinder= ButterKnife.bind(this,view);
-        new getInstructionsLong().execute(stepFragIntIndex);    //first element is the long description, second is the movie url
+
+        new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
 
         return view;
     }
 
     public class getInstructionsLong extends AsyncTask<int[], Void, String[]> {
-        String movieURLStepLong[] = new String[2];  //first element is the long description, second is the movie url
+        String StepLongMovieUrl[] = new String[2];  //first element is the long description, second is the movie url
 
         @Override
         protected String[] doInBackground(int[]... integers) {
             try{
-                stepFragIntIndex = integers[0];
-                mRecipeIndex =stepFragIntIndex[0];
-                mStepIndex= stepFragIntIndex[1];
+                stepFragRecipeStepValues = integers[0];
+                mRecipeIndex = stepFragRecipeStepValues[0];
+                mStepIndex= stepFragRecipeStepValues[1];
+                Log.d("stepBackground 0  ",mRecipeIndex+"");Log.d("stepBackground 1  ",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
-                movieURLStepLong = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex,mStepIndex) ;
-                return  movieURLStepLong;
+                StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex);
+                return StepLongMovieUrl;
             }catch (Exception e){
                 e.printStackTrace();
                 return null;
             }
         }
-
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
             if(strings[0]!=null){
-                no_video_image.setVisibility(View.INVISIBLE);
+                Log.d("stepFragmentPost 0  ",strings[0] );
+                Log.d("stepFragmentPost 1  ",strings[1] );
                 instruction_text.setText(strings[0]);
+            }else{
+                instruction_text.setText("There are no instructions for this step.");
+            }
+            if(strings[1]!=null){
+                no_video_text.setVisibility(View.INVISIBLE);
+                step_movie.setVisibility(View.VISIBLE);
                 try {
                     BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
                     TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
                     mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
-                    Uri videoURI = Uri.parse(testUrl);
-                    //Uri videoURI = Uri.parse(strings[1]);
+                    //Uri videoURI = Uri.parse(testUrl);
+                    Uri videoURI = Uri.parse(strings[1]);
                     DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
                     MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
                     step_movie.setPlayer(mExoPlayer);
@@ -100,11 +108,9 @@ public class StepFragment extends Fragment {
                 }catch (Exception e){
                     Log.e("MainActivity", " exoplayer error " + e.toString());
                 }
-            }
-            if(strings[1]!=null){
-
             }else{
-                no_video_image.setVisibility(View.VISIBLE);
+                no_video_text.setVisibility(View.VISIBLE);
+                step_movie.setVisibility(View.INVISIBLE);
             }
         }
     }
