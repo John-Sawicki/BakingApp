@@ -46,20 +46,19 @@ public class StepFragment extends Fragment {
     int[] stepFragRecipeStepValues ={0,0};
     String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
     public StepFragment( ){
-
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
         mContext= container.getContext();
-        //step_movie = view.findViewById(R.id.step_movie);
-        //no_video_image = view.findViewById(R.id.no_video_image);
-        //instruction_text = view.findViewById(R.id.instruction_text);
+        no_video_text.setVisibility(View.VISIBLE);
+        step_movie.setVisibility(View.INVISIBLE);
         mUnbinder= ButterKnife.bind(this,view);
-
+        Bundle bundle = getArguments();
+        stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
+        stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
         new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
-
         return view;
     }
 
@@ -72,7 +71,7 @@ public class StepFragment extends Fragment {
                 stepFragRecipeStepValues = integers[0];
                 mRecipeIndex = stepFragRecipeStepValues[0];
                 mStepIndex= stepFragRecipeStepValues[1];
-                Log.d("stepBackground 0  ",mRecipeIndex+"");Log.d("stepBackground 1  ",mStepIndex+"");
+                Log.d("stepBackground rec  ",mRecipeIndex+"");Log.d("stepBackground steo  ",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex);
                 return StepLongMovieUrl;
@@ -84,13 +83,13 @@ public class StepFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
             if(strings[0]!=null){
-                Log.d("stepFragmentPost 0  ",strings[0] );
+                Log.d("recipeFragmentPost 0  ",strings[0] );
                 Log.d("stepFragmentPost 1  ",strings[1] );
                 instruction_text.setText(strings[0]);
             }else{
                 instruction_text.setText("There are no instructions for this step.");
             }
-            if(strings[1]!=null){
+            if(strings[1]!=null && strings[1]!=""){
                 no_video_text.setVisibility(View.INVISIBLE);
                 step_movie.setVisibility(View.VISIBLE);
                 try {
@@ -115,8 +114,10 @@ public class StepFragment extends Fragment {
         }
     }
     public void setDescAndURL(int[] intDescAndUrl){
-        mRecipeIndex = intDescAndUrl[0];
-        mStepIndex = intDescAndUrl[1];
+        stepFragRecipeStepValues[0] = intDescAndUrl[0];
+        Log.d("StepFrag rec ",stepFragRecipeStepValues[0]+"");
+        stepFragRecipeStepValues[1] = intDescAndUrl[1];
+        Log.d("StepFrag step",stepFragRecipeStepValues[1]+"" );
     }
     @Override
     public void onDestroyView() {

@@ -21,7 +21,7 @@ public class RecipeStepDetail extends AppCompatActivity {
     int recipeIndex; //ex brownies, this stays the same in this activity
     int stepIndex;  //ex step 2; increment to go to the next step by replacing a fragment
     int[] recipeStepValues = new int[2];//first element is long description second is movie url
-    StepFragment stepFragment;
+    //StepFragment stepFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +31,32 @@ public class RecipeStepDetail extends AppCompatActivity {
         Log.d("recipeNumberStepDetail",recipeStepValues[0]+"");
         recipeStepValues[1] = getIntent().getIntExtra("stepIndex",1);
         Log.d("stepNumberStepDetail",recipeStepValues[1]+"");
-        stepFragment = new StepFragment();
 
-        stepFragment.setDescAndURL(recipeStepValues);
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().add(R.id.movie_step_fragment, stepFragment).commit();
+        //StepFragment stepFragmentOnCreate = new StepFragment();
+        if(savedInstanceState==null){
+            FragmentManager fm = getSupportFragmentManager();
+            StepFragment stepFragmentOnCreate = new StepFragment();
+            Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+            bundle.putInt("recipeIndex",recipeStepValues[0]);
+            bundle.putInt("stepIndex",recipeStepValues[1] );
+            stepFragmentOnCreate.setArguments(bundle);
+            stepFragmentOnCreate.setDescAndURL(recipeStepValues);
 
-
-
+            Log.d("steDetailAddFragment","saved is null");
+            fm.beginTransaction().add(R.id.movie_step_fragment, stepFragmentOnCreate).commit();
+        }
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                StepFragment stepFragmentClick = new StepFragment();
                 recipeStepValues[1]+= recipeStepValues[1];   //increment the step by increase the value in the JSON array to parse
-                stepFragment.setDescAndURL(recipeStepValues); //update the values for the fragment
+                Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+                bundle.putInt("recipeIndex click",recipeStepValues[0]);
+                bundle.putInt("stepIndex click",recipeStepValues[1]);
+                stepFragmentClick.setArguments(bundle);
+                stepFragmentClick.setDescAndURL(recipeStepValues); //update the values for the fragment
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_step_fragment, stepFragment).commit();  //replace the fragment with the new step description and video
+                        .replace(R.id.movie_step_fragment, stepFragmentClick).commit();  //replace the fragment with the new step description and video
             }
         });
     }

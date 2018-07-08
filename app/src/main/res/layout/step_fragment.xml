@@ -8,7 +8,7 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/step_movie"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/instruction_text"
         app:layout_constraintLeft_toLeftOf="parent"
