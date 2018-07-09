@@ -3,4 +3,8 @@
     <string name="next_step">Next Step</string>
     <string name="list_of_ingredients">List of Ingredients</string>
     <string name="steps">Steps</string>
+    <string name="loading_message">Loading instructions</string>
+    <string name="check_for_video">Checking for step video.</string>
+    <string name="no_instruction_text">There are no instructions for this step.</string>
+    <string name="no_video_text">No video is available for this step.</string>
 </resources>
