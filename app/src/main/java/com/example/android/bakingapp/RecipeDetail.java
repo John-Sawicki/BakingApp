@@ -90,4 +90,15 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             mStepAdapter.updateSteps(s);
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("saveRecipe", recipeNumber);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        recipeNumber =savedInstanceState.getInt("saveRecipe");
+    }
 }

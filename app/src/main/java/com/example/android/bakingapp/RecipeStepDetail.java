@@ -79,6 +79,17 @@ public class RecipeStepDetail extends AppCompatActivity {
         //stepFragmentClick.setDescAndURL(recipeStepValues); //update the values for the fragment
         fm.beginTransaction()
                 .replace(R.id.movie_step_fragment, stepFragmentClick).commit();  //replace the fragment with the new step description and video
-
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("saveRecipeKey", recipeStepValues[0]);
+        outState.putInt("saveStepKey", recipeStepValues[1]);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        recipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
+        recipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
     }
 }

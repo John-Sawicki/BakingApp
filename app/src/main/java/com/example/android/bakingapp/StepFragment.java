@@ -70,7 +70,7 @@ public class StepFragment extends Fragment {
                 Log.d("stepFragment back rec",mRecipeIndex+"");
                 Log.d("stepFragment back step",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
-                StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex);
+                StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex, mContext);
                 return StepLongMovieUrl;
             }catch (Exception e){
                 e.printStackTrace();

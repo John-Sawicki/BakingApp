@@ -29,6 +29,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         ButterKnife.bind(this);
        // mRecyclerView =findViewById(R.id.recycler_view);
         Configuration config = getResources().getConfiguration();
+        //TODO compare the name of the layout to determine the grid manager
         /*
         if(config.smallestScreenWidthDp >=600){
             //set columns to 4

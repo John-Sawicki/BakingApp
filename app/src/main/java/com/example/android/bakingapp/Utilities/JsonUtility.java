@@ -1,7 +1,10 @@
 package com.example.android.bakingapp.Utilities;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.android.bakingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +92,7 @@ public class JsonUtility {
             e.printStackTrace(); return null;
         }
     }
-    public static String[] getStepsLong(String rawJSON, int selectedRecipe, int selectedStep) throws JSONException{
+    public static String[] getStepsLong(String rawJSON, int selectedRecipe, int selectedStep, Context context) throws JSONException{
         String mRawJSON = rawJSON;
         String step[] = {"empty", "empty"};//first element is long description second is movie url
         String urlCheck;
@@ -97,26 +100,31 @@ public class JsonUtility {
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe
             JSONArray stepArray = recipeJSON.getJSONArray("steps");
-            JSONObject oneStep = stepArray.getJSONObject(selectedStep);
-            step[0] = oneStep.getString("description");
-            //urlCheck = oneStep.getString("videoURL");
-            if(oneStep.getString("videoURL")==null){
-                step[1]="empty"; Log.d("stepsUtility", "null url");
-            }else if(oneStep.getString("videoURL")==""){
-                step[1]="empty"; Log.d("stepsUtility", "empty url");
+            if(selectedStep>=stepArray.length()){//at the last step tell the user there are no more steps
+                step[0]=context.getResources().getString(R.string.no_more_steps);
+                step[1]="";
+                return step;
             }else{
-                step[1]=oneStep.getString("videoURL");
-                //Log.d("stepsUtility valid", step[1]);
-            }
-            //step[1] = oneStep.getString("videoURL");
+                JSONObject oneStep = stepArray.getJSONObject(selectedStep);
+                step[0] = oneStep.getString("description");
+                //urlCheck = oneStep.getString("videoURL");
+                if(oneStep.getString("videoURL")==null){
+                    step[1]="empty"; Log.d("stepsUtility", "null url");
+                }else if(oneStep.getString("videoURL")==""){
+                    step[1]="empty"; Log.d("stepsUtility", "empty url");
+                }else{
+                    step[1]=oneStep.getString("videoURL");
+                    //Log.d("stepsUtility valid", step[1]);
+                }
+                //step[1] = oneStep.getString("videoURL");
 
-            Log.d("stepsUtility Des", step[0]);
-            Log.d("stepsUtility URL", step[1]);
-            return step;
+                Log.d("stepsUtility Des", step[0]);
+                Log.d("stepsUtility URL", step[1]);
+                return step;
+            }
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
-
 }
