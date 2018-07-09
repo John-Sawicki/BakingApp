@@ -52,12 +52,15 @@ public class StepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
         mContext= container.getContext();
+        mUnbinder= ButterKnife.bind(this,view);
         no_video_text.setVisibility(View.VISIBLE);
         step_movie.setVisibility(View.INVISIBLE);
-        mUnbinder= ButterKnife.bind(this,view);
+
         Bundle bundle = getArguments();
         stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
+        Log.d("stepFragment onC rec",stepFragRecipeStepValues[0]+"");
         stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
+        Log.d("stepFragment onC step",stepFragRecipeStepValues[1]+"");
         new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
         return view;
     }
@@ -71,7 +74,8 @@ public class StepFragment extends Fragment {
                 stepFragRecipeStepValues = integers[0];
                 mRecipeIndex = stepFragRecipeStepValues[0];
                 mStepIndex= stepFragRecipeStepValues[1];
-                Log.d("stepBackground rec  ",mRecipeIndex+"");Log.d("stepBackground steo  ",mStepIndex+"");
+                Log.d("stepFragment back rec",mRecipeIndex+"");
+                Log.d("stepFragment back step",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex);
                 return StepLongMovieUrl;

@@ -22,6 +22,7 @@ public class RecipeStepDetail extends AppCompatActivity {
     int stepIndex;  //ex step 2; increment to go to the next step by replacing a fragment
     int[] recipeStepValues = new int[2];//first element is long description second is movie url
     //StepFragment stepFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,55 +35,50 @@ public class RecipeStepDetail extends AppCompatActivity {
 
         //StepFragment stepFragmentOnCreate = new StepFragment();
         if(savedInstanceState==null){
-            FragmentManager fm = getSupportFragmentManager();
+            FragmentManager fmAdd = getSupportFragmentManager();
             StepFragment stepFragmentOnCreate = new StepFragment();
             Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
             bundle.putInt("recipeIndex",recipeStepValues[0]);
             bundle.putInt("stepIndex",recipeStepValues[1] );
             stepFragmentOnCreate.setArguments(bundle);
-            stepFragmentOnCreate.setDescAndURL(recipeStepValues);
+            //stepFragmentOnCreate.setDescAndURL(recipeStepValues);
 
             Log.d("steDetailAddFragment","saved is null");
-            fm.beginTransaction().add(R.id.movie_step_fragment, stepFragmentOnCreate).commit();
+            fmAdd.beginTransaction().add(R.id.movie_step_fragment, stepFragmentOnCreate).commit();
         }
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                recipeStepValues[1]=recipeStepValues[1]+1;   //increment the step by increase the value in the JSON array to parse
+                createFragment(recipeStepValues);
+                /*
                 StepFragment stepFragmentClick = new StepFragment();
-                recipeStepValues[1]+= recipeStepValues[1];   //increment the step by increase the value in the JSON array to parse
-                Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
-                bundle.putInt("recipeIndex click",recipeStepValues[0]);
-                bundle.putInt("stepIndex click",recipeStepValues[1]);
-                stepFragmentClick.setArguments(bundle);
-                stepFragmentClick.setDescAndURL(recipeStepValues); //update the values for the fragment
-                getSupportFragmentManager().beginTransaction()
+                Bundle bundle2 = new Bundle();//pass the values to the fragment to use when it is first created
+                bundle2.putInt("recipeIndex click",recipeStepValues[0]);
+                Log.d("StepDetail onClickRec",recipeStepValues[0]+"");
+                bundle2.putInt("stepIndex click",recipeStepValues[1]);
+                Log.d("StepDetail onClickStp",recipeStepValues[1]+"");
+                stepFragmentClick.setArguments(bundle2);
+                FragmentManager fm = getSupportFragmentManager();
+                //stepFragmentClick.setDescAndURL(recipeStepValues); //update the values for the fragment
+                fm.beginTransaction()
                         .replace(R.id.movie_step_fragment, stepFragmentClick).commit();  //replace the fragment with the new step description and video
+            */
             }
         });
     }
-    /* this belongs in the fragment
-    public class getStepsLong extends AsyncTask<Integer, Void,String[] >{
-        String[] stepAndUrl = new String[2];//first element is long description second is movie url
-        @Override
-        protected String[] doInBackground(Integer... integers) {
-            try{
-                int recipeInt = integers[0];
-                int stepInt= integers[1];
-                String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
-                stepAndUrl = JsonUtility.getStepsLong(jsonStringFromWeb, recipeInt, stepInt);
-                return stepAndUrl;
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
+    private void createFragment(int[] recStepIndex){
+        StepFragment stepFragmentClick = new StepFragment();
+        Bundle bundle2 = new Bundle();//pass the values to the fragment to use when it is first created
+        bundle2.putInt("recipeIndex",recStepIndex[0]);
+        Log.d("StepDetail onClickRec",recStepIndex[0]+"");
+        bundle2.putInt("stepIndex",recStepIndex[1]);
+        Log.d("StepDetail onClickStp",recStepIndex[1]+"");
+        stepFragmentClick.setArguments(bundle2);
+        FragmentManager fm = getSupportFragmentManager();
+        //stepFragmentClick.setDescAndURL(recipeStepValues); //update the values for the fragment
+        fm.beginTransaction()
+                .replace(R.id.movie_step_fragment, stepFragmentClick).commit();  //replace the fragment with the new step description and video
 
-        @Override
-        protected void onPostExecute(String[] strings) {
-            instructionText.setText(strings[0]);
-            super.onPostExecute(strings);
-        }
     }
-    */
-
 }
