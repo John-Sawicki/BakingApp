@@ -55,7 +55,6 @@ public class StepFragment extends Fragment {
         mUnbinder= ButterKnife.bind(this,view);
         no_video_text.setVisibility(View.VISIBLE);
         step_movie.setVisibility(View.INVISIBLE);
-
         Bundle bundle = getArguments();
         stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
         Log.d("stepFragment onC rec",stepFragRecipeStepValues[0]+"");
@@ -63,6 +62,12 @@ public class StepFragment extends Fragment {
         Log.d("stepFragment onC step",stepFragRecipeStepValues[1]+"");
         new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //TODO turn off exoplayer
     }
 
     public class getInstructionsLong extends AsyncTask<int[], Void, String[]> {
@@ -87,13 +92,20 @@ public class StepFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
             if(strings[0]!=null){
-                Log.d("recipeFragmentPost 0  ",strings[0] );
-                Log.d("stepFragmentPost 1  ",strings[1] );
+                Log.d("stepFragment Post 0  ",strings[0] );
                 instruction_text.setText(strings[0]);
             }else{
+                Log.d("stepFragment noText", "no instructions");
                 instruction_text.setText("There are no instructions for this step.");
             }
-            if(strings[1]!=null && strings[1]!=""){
+            if(strings[1]!=null)Log.d("stepFragment Post 1  ",strings[1] );
+
+            if(strings[1]==null || strings[1]==""||strings[1]=="empty"|| strings[1].length()==0){    //valid urls start with http
+                Log.d("stepFragment noVideo", "no video");
+                no_video_text.setVisibility(View.VISIBLE);
+                step_movie.setVisibility(View.INVISIBLE);
+            }else{
+                Log.d("stepFragment Video", strings[1]);
                 no_video_text.setVisibility(View.INVISIBLE);
                 step_movie.setVisibility(View.VISIBLE);
                 try {
@@ -109,12 +121,33 @@ public class StepFragment extends Fragment {
 
                     mExoPlayer.setPlayWhenReady(true);
                 }catch (Exception e){
-                    Log.e("MainActivity", " exoplayer error " + e.toString());
+                    Log.e("stepFragment catch", " exoplayer error " + e.toString());
+                }
+            }
+            /*
+            if(strings[1]!=null && strings[1]!=""){
+                Log.d("stepFragment Video", strings[1]);
+                no_video_text.setVisibility(View.INVISIBLE);
+                step_movie.setVisibility(View.VISIBLE);
+                try {
+                    BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                    TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+                    mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
+                    //Uri videoURI = Uri.parse(testUrl);
+                    Uri videoURI = Uri.parse(strings[1]);
+                    DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+                    MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
+                    step_movie.setPlayer(mExoPlayer);
+                    mExoPlayer.prepare(mediaSource);
+
+                    mExoPlayer.setPlayWhenReady(true);
+                }catch (Exception e){
+                    Log.e("stepFragment catch", " exoplayer error " + e.toString());
                 }
             }else{
-                no_video_text.setVisibility(View.VISIBLE);
-                step_movie.setVisibility(View.INVISIBLE);
+
             }
+            */
         }
     }
     public void setDescAndURL(int[] intDescAndUrl){
@@ -127,5 +160,7 @@ public class StepFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        if(mExoPlayer!=null)
+            mExoPlayer.release();
     }
 }

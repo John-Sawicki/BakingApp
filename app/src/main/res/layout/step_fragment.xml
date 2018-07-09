@@ -9,18 +9,18 @@
         android:id="@+id/step_movie"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/instruction_text"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/instruction_text"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/no_video_text"
         android:text="There is no video for this step"
         style="@style/title"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
