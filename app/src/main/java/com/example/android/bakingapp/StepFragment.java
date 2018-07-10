@@ -31,7 +31,7 @@ import butterknife.Unbinder;
 public class StepFragment extends Fragment {
     @BindView(R.id.step_movie)SimpleExoPlayerView step_movie;
     @BindView(R.id.no_video_text)TextView no_video_text;
-    @BindView(R.id.instruction_text)TextView instruction_text;
+    @Nullable @BindView(R.id.instruction_text)TextView instruction_text;
     Context mContext;
     SimpleExoPlayer mExoPlayer;
     private Unbinder mUnbinder;
@@ -39,16 +39,19 @@ public class StepFragment extends Fragment {
     int mStepIndex=0;  //ex step 2; increment to go to the next step by replacing a fragment
     int[] stepFragRecipeStepValues ={0,0};
     String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
+    private boolean phoneLandscape = false;
     public StepFragment( ){
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
-        mContext= container.getContext();
+        //mContext= container.getContext();
+        mContext = getActivity().getApplicationContext();
         mUnbinder= ButterKnife.bind(this,view);
+        if(view.findViewById(R.id.instruction_text)==null) phoneLandscape =true;    //no instruction text view for landscape view
         no_video_text.setVisibility(View.VISIBLE);
-        no_video_text.setText(R.string.check_for_video);
+         no_video_text.setText(R.string.check_for_video);
         step_movie.setVisibility(View.INVISIBLE);
         instruction_text.setText(R.string.loading_message);
         Bundle bundle = getArguments();

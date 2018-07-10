@@ -17,7 +17,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH>
 
     final private StepOnClickInterface mStepOnClickListener;
     public StepAdapter(StepOnClickInterface clickInterface){
-        steps[0]= "preheat oven"; steps[1]= "mix ingredients"; steps[2]="shake and bake";
+        steps[0]= "Loading Steps"; steps[1]= "Please wait"; steps[2]="";
         mStepOnClickListener = clickInterface;
     }
     public interface StepOnClickInterface{
