@@ -13,7 +13,7 @@ import com.example.android.bakingapp.R;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterVH> {
-    private String[] mRecipes = {"cake","cookies", "pie","cake" };
+    private String[] mRecipes = {"Loading Recipes","Please Wait"};
     final private  RecipeOnClickListener mClickListener;
     public RecipeAdapter(RecipeOnClickListener clickListener){
         mClickListener = clickListener;

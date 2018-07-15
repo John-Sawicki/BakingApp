@@ -31,7 +31,7 @@ import butterknife.Unbinder;
 public class StepFragment extends Fragment {
     @BindView(R.id.step_movie)SimpleExoPlayerView step_movie;
     @BindView(R.id.no_video_text)TextView no_video_text;
-    @Nullable @BindView(R.id.instruction_text)TextView instruction_text;
+    @BindView(R.id.instruction_text)TextView instruction_text;
     Context mContext;
     SimpleExoPlayer mExoPlayer;
     private Unbinder mUnbinder;
@@ -104,13 +104,11 @@ public class StepFragment extends Fragment {
                     BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
                     TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
                     mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
-                    //Uri videoURI = Uri.parse(testUrl);
                     Uri videoURI = Uri.parse(strings[1]);
                     DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
                     MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
                     step_movie.setPlayer(mExoPlayer);
                     mExoPlayer.prepare(mediaSource);
-
                     mExoPlayer.setPlayWhenReady(true);
                 }catch (Exception e){
                     Log.e("stepFragment catch", " exoplayer error " + e.toString());

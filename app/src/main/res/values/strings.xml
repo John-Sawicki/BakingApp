@@ -8,4 +8,7 @@
     <string name="no_instruction_text">There are no instructions for this step.</string>
     <string name="no_video_text">No video is available for this step.</string>
     <string name="no_more_steps">There are no more steps. Enjoy your desert!</string>
+    <string name="loading_ingredients">Loading Ingredients</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

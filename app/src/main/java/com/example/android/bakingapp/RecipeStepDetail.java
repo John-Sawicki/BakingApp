@@ -30,23 +30,29 @@ public class RecipeStepDetail extends AppCompatActivity {
         ButterKnife.bind(this);
         if(findViewById(R.id.next_button)==null) phonePortrait =false;
         recipeStepValues[0] = getIntent().getIntExtra("recipeIndex",1);
-        Log.d("recipeNumberStepDetail",recipeStepValues[0]+"");
+        Log.d("recStepDe recIndex",recipeStepValues[0]+"");
         recipeStepValues[1] = getIntent().getIntExtra("stepIndex",1);
-        Log.d("stepNumberStepDetail",recipeStepValues[1]+"");
+        Log.d("recStepDe stepIndex",recipeStepValues[1]+"");
 
-        //StepFragment stepFragmentOnCreate = new StepFragment();
-        //if(savedInstanceState==null){
+        if(savedInstanceState==null){
             FragmentManager fmAdd = getSupportFragmentManager();
             StepFragment stepFragmentOnCreate = new StepFragment();
             Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
             bundle.putInt("recipeIndex",recipeStepValues[0]);
             bundle.putInt("stepIndex",recipeStepValues[1] );
             stepFragmentOnCreate.setArguments(bundle);
-            //stepFragmentOnCreate.setDescAndURL(recipeStepValues);
-
-            Log.d("steDetailAddFragment","saved is null");
+            Log.d("recStepDe","saved is null");
             fmAdd.beginTransaction().add(R.id.movie_step_fragment, stepFragmentOnCreate).commit();
-        //}
+        }else{
+            FragmentManager fmAdd = getSupportFragmentManager();
+            StepFragment stepFragmentOnCreate = new StepFragment();
+            Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+            bundle.putInt("recipeIndex",recipeStepValues[0]);
+            bundle.putInt("stepIndex",recipeStepValues[1] );
+            stepFragmentOnCreate.setArguments(bundle);
+            Log.d("recStepDe","saved isn't null");
+            fmAdd.beginTransaction().replace(R.id.movie_step_fragment, stepFragmentOnCreate).commit();
+        }
         if(phonePortrait){
             nextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
