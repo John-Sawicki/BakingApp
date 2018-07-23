@@ -1,19 +1,19 @@
-package com.example.android.bakingapp.Utilities;
+package com.example.android.bakingapp;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
-import com.example.android.bakingapp.IngredWidgetProvider;
-import com.example.android.bakingapp.Utilities.IngredContract.IngredEntry;
-import static com.example.android.bakingapp.Utilities.IngredContract.BASE_CONTENT_URI;
-import static com.example.android.bakingapp.Utilities.IngredContract.PATH_INGRED;
+import com.example.android.bakingapp.Provider.IngredWidgetProvider;
+import com.example.android.bakingapp.Provider.IngredContract.IngredEntry;
+import static com.example.android.bakingapp.Provider.IngredContract.BASE_CONTENT_URI;
+import static com.example.android.bakingapp.Provider.IngredContract.PATH_INGRED;
 public class IngredientService extends IntentService {
     public IngredientService(){
         super("IntentService");
@@ -30,8 +30,11 @@ public class IngredientService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if(intent!=null){
             final String action = intent.getAction();
-            if(UPDATE_INGREDIENTS.equals(action))   //query db to get the ingredients
+            if(UPDATE_INGREDIENTS.equals(action)) {//query db to get the ingredients
+                Log.d("InService", "onHandeIntent");
                 handleActionUpdateIngredients();
+            }
+
         }
     }
     private void handleActionUpdateIngredients(){
@@ -40,9 +43,11 @@ public class IngredientService extends IntentService {
                 null, null, null, null);
         String ingredients="";
         if(cursor!=null&&cursor.getCount()>=0){
+            Log.d("InService", "handleActionUpdate");
             cursor.moveToFirst();
             int ingredIndex = cursor.getColumnIndex(IngredEntry.COLUMN_INGREDIENTS);
             ingredients = cursor.getString(ingredIndex);
+            Log.d("InService handActUp in", ingredients);
             cursor.close();
 
         }

@@ -1,10 +1,10 @@
-package com.example.android.bakingapp.Utilities;
+package com.example.android.bakingapp.Provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class IngredContract {
-    public static final String AUTHORITY = "com.example.android.bakingapp.Utilities";
+    public static final String AUTHORITY = "com.example.android.bakingapp";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://"+AUTHORITY);
     public static final String PATH_INGRED = "ingred";
     public static final long INVALID_INGRED_ID = -1;

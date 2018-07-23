@@ -2,7 +2,6 @@ package com.example.android.bakingapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +15,9 @@ import com.example.android.bakingapp.Utilities.StepAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.example.android.bakingapp.Utilities.IngredContract.IngredEntry;
+import com.example.android.bakingapp.Provider.IngredContract.IngredEntry;
+
+import static com.example.android.bakingapp.Provider.IngredContract.IngredEntry.CONTENT_URI;
 public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepOnClickInterface {
     @BindView(R.id.detail_ingredients)TextView ingredientsText;
     @BindView(R.id.step_recycler_view)RecyclerView stepsRecyclerView;
@@ -72,6 +73,12 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             ingredientsText.setText(s);
             ContentValues contentValues = new ContentValues();
             contentValues.put(IngredEntry.COLUMN_INGREDIENTS, s);//used to store the value for the widget
+            //Uri INGRED_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGRED).build();
+            //getContentResolver().update(INGRED_URI, contentValues, null, null);
+            getContentResolver().insert(CONTENT_URI, contentValues);
+            Log.d("RecipeDetail post stg", s);
+
+
         }
     }
     public class getSteps extends AsyncTask<Integer, Void, String[]>{
