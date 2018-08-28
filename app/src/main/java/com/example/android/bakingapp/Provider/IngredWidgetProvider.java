@@ -1,4 +1,4 @@
-package com.example.android.bakingapp.Provider;
+package com.example.android.bakingapp.provider;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.example.android.bakingapp.IngredientService;
+import com.example.android.bakingapp.provider.IngredientService;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.RecipeActivity;
 

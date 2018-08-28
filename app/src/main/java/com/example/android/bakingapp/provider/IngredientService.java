@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.provider;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -10,34 +10,40 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.android.bakingapp.Provider.IngredWidgetProvider;
-import com.example.android.bakingapp.Provider.IngredContract.IngredEntry;
-import static com.example.android.bakingapp.Provider.IngredContract.BASE_CONTENT_URI;
-import static com.example.android.bakingapp.Provider.IngredContract.PATH_INGRED;
+//import com.example.android.bakingapp.provider.IngredWidgetProvider;
+import com.example.android.bakingapp.provider.IngredContract.IngredEntry;
+import static com.example.android.bakingapp.provider.IngredContract.BASE_CONTENT_URI;
+import static com.example.android.bakingapp.provider.IngredContract.PATH_INGRED;
+
 public class IngredientService extends IntentService {
+    private String ingredients ="Please select a recipe\n to get a list\n of ingredients\n " +
+            "350G bittersweet chocolate (60-70% cacao)";
     public IngredientService(){
         super("IntentService");
     }
-    public static final String UPDATE_INGREDIENTS = "com.example.android.bakingapp.Utilities.action.update_ingredients";
+    public static final String ACTION_UPDATE_INGREDIENTS = "com.example.android.bakingapp.Utilities.action.update_ingredients";
                                                     //package   action      name
     public static void startActionUpdateIngred(Context context){
         Intent intent = new Intent(context, IngredientService.class);
-        intent.setAction(UPDATE_INGREDIENTS);
+        intent.setAction(ACTION_UPDATE_INGREDIENTS);
         context.startService(intent);
+        Log.d("widget", "startAction");
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if(intent!=null){
             final String action = intent.getAction();
-            if(UPDATE_INGREDIENTS.equals(action)) {//query db to get the ingredients
-                Log.d("InService", "onHandeIntent");
+            if(ACTION_UPDATE_INGREDIENTS.equals(action)) {//query db to get the ingredients
+                Log.d("widget", "onHandeIntent");
                 handleActionUpdateIngredients();
             }
 
         }
     }
     private void handleActionUpdateIngredients(){
+        Log.d("widget", "handleAction");
+        /*
         Uri INGRED_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGRED).build();
         Cursor cursor = getContentResolver().query(INGRED_URI,
                 null, null, null, null);
@@ -51,9 +57,11 @@ public class IngredientService extends IntentService {
             cursor.close();
 
         }
+        */
+        if(ingredients==null)ingredients ="Please Select a recipe";
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(this, IngredWidgetProvider.class));
-        IngredWidgetProvider.updateAppWidgets(this,appWidgetManager, ingredients, appWidgetId );
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, IngredientWidget2Provider.class));
+        IngredientWidget2Provider.updateAppWidgets(this, appWidgetManager,  appWidgetIds,ingredients );
         //ContentValues contentValues = new ContentValues();
         //getContentResolver().query()
 

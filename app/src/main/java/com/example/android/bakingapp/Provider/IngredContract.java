@@ -1,4 +1,4 @@
-package com.example.android.bakingapp.Provider;
+package com.example.android.bakingapp.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

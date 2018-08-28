@@ -1,9 +1,9 @@
-package com.example.android.bakingapp.Provider;
+package com.example.android.bakingapp.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.android.bakingapp.Provider.IngredContract.IngredEntry;
+import com.example.android.bakingapp.provider.IngredContract.IngredEntry;
 
 public class IngredDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="ingredients.db";
@@ -14,9 +14,10 @@ public class IngredDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_PLANTS_TABLE = "CREATE TABLE "+IngredEntry.TABLE_NAME+" ("+
-                IngredEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                IngredEntry.COLUMN_INGREDIENTS+" STRING NOT NULL)";
+        final String SQL_CREATE_PLANTS_TABLE = "CREATE TABLE "+
+                IngredEntry.TABLE_NAME+" ("+
+                IngredEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                IngredEntry.COLUMN_INGREDIENTS+" TEXT NOT NULL)";
         sqLiteDatabase.execSQL(SQL_CREATE_PLANTS_TABLE);
     }
 
