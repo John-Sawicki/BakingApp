@@ -29,7 +29,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         ButterKnife.bind(this);
        // mRecyclerView =findViewById(R.id.recycler_view);
         Configuration config = getResources().getConfiguration();
-
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
