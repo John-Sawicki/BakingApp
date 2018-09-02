@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,6 +17,7 @@ import static com.example.android.bakingapp.provider.IngredContract.BASE_CONTENT
 import static com.example.android.bakingapp.provider.IngredContract.PATH_INGRED;
 
 public class IngredientService extends IntentService {
+    private SQLiteDatabase mDb;
     private String ingredients ="Please select a recipe\n to get a list\n of ingredients\n " +
             "350G bittersweet chocolate (60-70% cacao)";
     public IngredientService(){
@@ -59,6 +61,16 @@ public class IngredientService extends IntentService {
         }
         */
         if(ingredients==null)ingredients ="Please Select a recipe";
+        IngredDbHelper dbHelper = new IngredDbHelper(getApplicationContext());
+        mDb = dbHelper.getReadableDatabase();
+        Cursor cursor =mDb.query(IngredEntry.TABLE_NAME,
+                null,null, null,null,null,null);
+        if(cursor.moveToFirst()){
+            Log.d("ingredientDb", "cursor.moveToFirst");
+            cursor.moveToPosition(0);
+            ingredients = cursor.getString(cursor.getColumnIndex(IngredEntry.COLUMN_INGREDIENTS));
+            Log.d("ingredientDb", "cursor at 0 position");
+        }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, IngredientWidget2Provider.class));
         IngredientWidget2Provider.updateAppWidgets(this, appWidgetManager,  appWidgetIds,ingredients );

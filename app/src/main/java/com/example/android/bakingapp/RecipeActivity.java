@@ -12,8 +12,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.bakingapp.Utilities.JsonUtility;
-import com.example.android.bakingapp.Utilities.RecipeAdapter;
+import com.example.android.bakingapp.utilities.JsonUtility;
+import com.example.android.bakingapp.utilities.RecipeAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,15 +29,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         ButterKnife.bind(this);
        // mRecyclerView =findViewById(R.id.recycler_view);
         Configuration config = getResources().getConfiguration();
-        //TODO compare the name of the layout to determine the grid manager
-        /*
-        if(config.smallestScreenWidthDp >=600){
-            //set columns to 4
-            GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
-        }else {
-            //set columns to 1
-        }
-        */
+
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

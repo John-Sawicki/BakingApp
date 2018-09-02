@@ -1,4 +1,4 @@
-package com.example.android.bakingapp.Utilities;
+package com.example.android.bakingapp.utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.android.bakingapp.Utilities.JsonUtility;
-import com.example.android.bakingapp.Utilities.StepAdapter;
+import com.example.android.bakingapp.utilities.JsonUtility;
+import com.example.android.bakingapp.utilities.StepAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
