@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,16 +48,39 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
         new getIngredients().execute(recipeNumber);
         //Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
+        //TODO if a tablet, add a step fragment. Start with step one for video and instructions.
+        if( ! getResources().getBoolean(R.bool.isPhone)){
+            FragmentManager fmAdd = getSupportFragmentManager();
+            StepFragment stepFragmentOnCreate = new StepFragment();
+            Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+            bundle.putInt("recipeIndex",recipeNumber);//from getIntExtra
+            bundle.putInt("stepIndex",0 );//add fragment at 0, replace based on step pressed
+            stepFragmentOnCreate.setArguments(bundle);
+            Log.d("recStepDe","saved is null");
+            fmAdd.beginTransaction().add(R.id.detail_fragment, stepFragmentOnCreate).commit();
+        }
     }
 
     @Override
     public void onClick(int index) {
-        Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
-        Log.d("recipeNumberDetail", recipeNumber+"");
-        Log.d("recipeDetailClick", index+"");
-        intent.putExtra("recipeIndex",recipeNumber);
-        intent.putExtra("stepIndex", index);    //step number for long description and movie
-        startActivity(intent);
+        //TODO if tablet use value to replace a fragment bundle for StepFragment
+        if(getResources().getBoolean(R.bool.isPhone)){//phone has a seperate activity for step detail
+            Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
+            Log.d("recipeNumberDetail", recipeNumber+"");
+            Log.d("recipeDetailClick", index+"");
+            intent.putExtra("recipeIndex",recipeNumber);
+            intent.putExtra("stepIndex", index);    //step number for long description and movie
+            startActivity(intent);
+        }else { //tablet adds the step detail on the right side
+            FragmentManager fmAdd = getSupportFragmentManager();
+            StepFragment stepFragmentOnCreate = new StepFragment();
+            Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+            bundle.putInt("recipeIndex",recipeNumber);//from getIntExtra
+            bundle.putInt("stepIndex",index );//onClick passing in step value, replace based on step pressed
+            stepFragmentOnCreate.setArguments(bundle);
+            Log.d("recStepDe","saved is null");
+            fmAdd.beginTransaction().replace(R.id.detail_fragment, stepFragmentOnCreate).commit();
+        }
     }
     public class getIngredients extends AsyncTask<Integer, Void, String >{
         String ingredients = new String();

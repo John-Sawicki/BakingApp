@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollViewandroid.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.example.android.bakingapp.RecipeActivity"
     android:elevation="16dp">
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/recycler_view"
-            android:numColumns="4"/>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List of Recipes"
+            android:id="@+id/recipe_title_text"
+            style="@style/title"/>
+        <!--
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fm_recipe_recycler"/>
+         -->
 
-</ScrollViewandroid.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_view"
+            android:numColumns="2"/>
+
+    </LinearLayout>
+</ScrollView>
