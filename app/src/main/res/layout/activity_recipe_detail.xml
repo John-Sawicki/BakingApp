@@ -12,22 +12,36 @@
         android:layout_height="wrap_content"
         android:text="@string/list_of_ingredients"
         style="@style/title"/>
+    <View
+        android:layout_width="200dp"
+        android:layout_height="4dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/detail_ingredients"
         android:text="@string/loading_ingredients"
-        style="@style/text">
+        style="@style/text"
+        android:layout_marginLeft="@dimen/left_margin">
     </TextView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/steps"
         style="@style/title"/>
+    <View
+        android:layout_width="200dp"
+        android:layout_height="4dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/step_recycler_view">
+        android:id="@+id/step_recycler_view"
+        android:layout_marginLeft="@dimen/left_margin">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

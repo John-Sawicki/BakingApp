@@ -117,13 +117,8 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
                long insert= mDb.insert(IngredEntry.TABLE_NAME, null,contentValues); //this will run once
                 Log.d("ingredientDb","insert value "+insert);
             }
-
             //getContentResolver().insert(CONTENT_URI, contentValues);
-
-
             Log.d("RecipeDetail post stg", s);
-
-
         }
     }
     public class getSteps extends AsyncTask<Integer, Void, String[]>{
@@ -145,7 +140,6 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             mStepAdapter.updateSteps(s);
         }
     }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

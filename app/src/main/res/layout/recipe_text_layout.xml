@@ -7,5 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recipe_text_view"
-        style="@style/recipe_and_Step"/>
+        style="@style/recipe_and_Step"
+        android:gravity="center_horizontal"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
 </FrameLayout>

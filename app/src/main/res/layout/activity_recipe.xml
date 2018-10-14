@@ -6,17 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.bakingapp.RecipeActivity"
-    android:elevation="16dp">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="List of Recipes"
+            android:text="@string/list_of_recipes"
             android:id="@+id/recipe_title_text"
             style="@style/title"/>
+        <View
+            android:layout_width="200dp"
+            android:layout_height="4dp"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
         <!--
         <FrameLayout
             android:layout_width="wrap_content"
@@ -28,7 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
-            android:numColumns="1"/>
-
+            android:numColumns="1"
+            android:layout_gravity="center_horizontal"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
     </LinearLayout>
 </ScrollView>

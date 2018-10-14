@@ -1,6 +1,7 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,26 +41,36 @@ public class StepFragment extends Fragment {
     int[] stepFragRecipeStepValues ={0,0};
     String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
     private boolean phoneLandscape = false;
+    private boolean ranAsync = false;
+    private getInstructionsLong mGetInstructionsLong;   //aSync task
     public StepFragment( ){
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
+
         //mContext= container.getContext();
         mContext = getActivity().getApplicationContext();
         mUnbinder= ButterKnife.bind(this,view);
-        if(view.findViewById(R.id.instruction_text)==null) phoneLandscape =true;    //no instruction text view for landscape view
+        //if(view.findViewById(R.id.instruction_text)==null) phoneLandscape =true;    //no instruction text view for landscape view
         no_video_text.setVisibility(View.VISIBLE);
-         no_video_text.setText(R.string.check_for_video);
+        no_video_text.setText(R.string.check_for_video);
+        no_video_text.setText(R.string.check_for_video);
         step_movie.setVisibility(View.INVISIBLE);
         instruction_text.setText(R.string.loading_message);
-        Bundle bundle = getArguments();
-        stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
-        Log.d("stepFragment onC rec",stepFragRecipeStepValues[0]+"");
-        stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
-        Log.d("stepFragment onC step",stepFragRecipeStepValues[1]+"");
-        new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
+        if(savedInstanceState==null){//use activity values at first and savedInstance values for rotation
+            Bundle bundle = getArguments();
+            stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
+            stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
+        }
+        Log.d("StepFragment onCreate",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
+        if(savedInstanceState==null){
+            new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
+        }
+
+
         return view;
     }
     public class getInstructionsLong extends AsyncTask<int[], Void, String[]> {
@@ -70,34 +81,37 @@ public class StepFragment extends Fragment {
                 stepFragRecipeStepValues = integers[0];
                 mRecipeIndex = stepFragRecipeStepValues[0];
                 mStepIndex= stepFragRecipeStepValues[1];
-                Log.d("stepFragment back rec",mRecipeIndex+"");
-                Log.d("stepFragment back step",mStepIndex+"");
+                Log.d("StepFragment doInback",mRecipeIndex+"");
+                Log.d("StepFragment doInback",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex, mContext);
+                Log.d("StepFragment doInback",StepLongMovieUrl[0]+" "+StepLongMovieUrl[1]);
                 return StepLongMovieUrl;
             }catch (Exception e){
                 e.printStackTrace();
+                Log.d("StepFragment doInback","return null");
                 return null;
             }
         }
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
+            Log.d("StepFragment onPostE",strings[0]+" "+strings[1] );
             if(strings[0]!=null){
-                Log.d("stepFragment Post 0  ",strings[0] );
+                Log.d("StepFragment onPost",strings[0] );
                 instruction_text.setText(strings[0]);
             }else{
-                Log.d("stepFragment noText", "no instructions");
+                Log.d("StepFragment onPost", "no instructions");
                 instruction_text.setText(R.string.no_instruction_text);
             }
-            if(strings[1]!=null)Log.d("stepFragment Post 1  ",strings[1] );
+            if(strings[1]!=null)Log.d("StepFragment Post 1  ",strings[1] );
 
             if(strings[1]==null || strings[1]==""||strings[1]=="empty"|| strings[1].length()==0){    //valid urls start with http
-                Log.d("stepFragment noVideo", "no video");
+                Log.d("StepFragment noVideo", "no video");
                 no_video_text.setVisibility(View.VISIBLE);
                 no_video_text.setText(R.string.no_video_text);
                 step_movie.setVisibility(View.INVISIBLE);
             }else{
-                Log.d("stepFragment Video", strings[1]);
+                Log.d("StepFragment Video", strings[1]);
                 no_video_text.setVisibility(View.INVISIBLE);
                 step_movie.setVisibility(View.VISIBLE);
                 try {
@@ -111,16 +125,20 @@ public class StepFragment extends Fragment {
                     mExoPlayer.prepare(mediaSource);
                     mExoPlayer.setPlayWhenReady(true);
                 }catch (Exception e){
-                    Log.e("stepFragment catch", " exoplayer error " + e.toString());
+                    Log.e("StepFragment catch", " exoplayer error " + e.toString());
                 }
             }
         }
     }
+    private boolean isAsyncRunning(){
+     //http://code.hootsuite.com/orientation-changes-on-android/
+        return true;
+    }
     public void setDescAndURL(int[] intDescAndUrl){
         stepFragRecipeStepValues[0] = intDescAndUrl[0];
-        Log.d("StepFrag rec ",stepFragRecipeStepValues[0]+"");
+        Log.d("StepFragment rec ",stepFragRecipeStepValues[0]+"");
         stepFragRecipeStepValues[1] = intDescAndUrl[1];
-        Log.d("StepFrag step",stepFragRecipeStepValues[1]+"" );
+        Log.d("StepFragment step",stepFragRecipeStepValues[1]+"" );
     }
     @Override
     public void onDestroyView() {
@@ -128,5 +146,30 @@ public class StepFragment extends Fragment {
         mUnbinder.unbind();
         if(mExoPlayer!=null)
             mExoPlayer.release();
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("saveRecipeKey", stepFragRecipeStepValues[0]);
+        outState.putInt("saveStepKey", stepFragRecipeStepValues[1]);
+        Log.d("StepFragment valueArray",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null){
+            stepFragRecipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
+            stepFragRecipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
+            Log.d("StepFragment onActC",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+        }
+    }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState!=null){
+            stepFragRecipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
+            stepFragRecipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
+            Log.d("StepFragment onVSR",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+        }
     }
 }

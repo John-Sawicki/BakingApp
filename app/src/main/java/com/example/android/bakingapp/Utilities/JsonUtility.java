@@ -28,10 +28,10 @@ public class JsonUtility {
             scanner.useDelimiter("\\A");
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
-                Log.d("response from site", "url has input");
+                Log.d("stepsUtility fromSite", "url has input");
                 return scanner.next();  //returns a string if it works
             } else {
-                Log.d("response from site", "no response");
+                Log.d("stepsUtility fromSite", "no response");
                 return null;
             }
         } finally {
@@ -46,7 +46,7 @@ public class JsonUtility {
             for(int i = 0; i<recipes.length;i++){
                 JSONObject recipeJSON = recipesJSON.getJSONObject(i);   //when i =0 has only nutella pie
                 recipes[i]= recipeJSON.getString("name");   //get key pair for name
-                Log.d("recipeNameUtil", recipes[i]);
+                Log.d("stepsUtility recipe", recipes[i]);
             }
             return recipes;
         }catch (Exception e){
