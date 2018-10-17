@@ -76,13 +76,15 @@ public class JsonUtility {
     }
     public static String[] getStepsShort(String rawJSON, int selectedRecipe) throws JSONException{
         String mRawJSON = rawJSON;
-        String[] steps = new String[20];
+        int arrayLenth =determineArrayLength(selectedRecipe);
+        String[] steps =new String[arrayLenth];//null;//    new String[20];
         try {
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe
             JSONArray stepArray = recipeJSON.getJSONArray("steps");
             for(int i = 0; i<stepArray.length(); i++) {
                 JSONObject oneStep = stepArray.getJSONObject(i);   //get first ingredient
+                //steps = new String[stepArray.length()]; //length depends on the recipe
                 steps[i] = oneStep.getString("shortDescription");
                 Log.d("stepsUtility", steps[i]);
                 //steps[i]+="\n"+oneStep.getString("description");
@@ -126,5 +128,14 @@ public class JsonUtility {
             e.printStackTrace();
             return null;
         }
+    }
+    private static int determineArrayLength(int selectedRecipe){
+            switch (selectedRecipe){
+                case 0: return 7;
+                case 1: return 10;
+                case 2: return 14;
+                case 3: return 13;
+                default: return 14;
+            }
     }
 }

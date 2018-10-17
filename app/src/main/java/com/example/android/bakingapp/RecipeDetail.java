@@ -137,7 +137,10 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         }
         @Override
         protected void onPostExecute(String[] s) {
-            mStepAdapter.updateSteps(s);
+            if(s!=null){
+                mStepAdapter.updateSteps(s);
+            }
+
         }
     }
     @Override

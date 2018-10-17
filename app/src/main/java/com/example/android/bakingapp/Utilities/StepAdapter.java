@@ -13,11 +13,11 @@ import com.example.android.bakingapp.R;
 import java.util.List;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepAdapterVH> {
-    private String[] steps = new String[20];    //array longer than number of steps in json
+    private String[] steps;   //array longer than number of steps in json
 
     final private StepOnClickInterface mStepOnClickListener;
     public StepAdapter(StepOnClickInterface clickInterface){
-        steps[0]= "Loading Steps"; steps[1]= "Please wait"; steps[2]="";
+        //steps[0]= "Loading Steps"; steps[1]= "Please wait"; steps[2]="";
         mStepOnClickListener = clickInterface;
     }
     public interface StepOnClickInterface{
