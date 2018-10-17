@@ -40,9 +40,10 @@ public class StepFragment extends Fragment {
     int mStepIndex=0;  //ex step 2; increment to go to the next step by replacing a fragment
     int[] stepFragRecipeStepValues ={0,0};
     String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
-    private boolean phoneLandscape = false;
+    private boolean phoneLandscape = false, valuesSaved;
     private boolean ranAsync = false;
     private getInstructionsLong mGetInstructionsLong;   //aSync task
+    private final static String RECIPE_KEY = "saveRecipeKey", STEP_KEY = "saveStepKey", VALUES_SAVED = "valuesSaved";
     public StepFragment( ){
     }
 
@@ -50,7 +51,6 @@ public class StepFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
-
         //mContext= container.getContext();
         mContext = getActivity().getApplicationContext();
         mUnbinder= ButterKnife.bind(this,view);
@@ -60,32 +60,22 @@ public class StepFragment extends Fragment {
         no_video_text.setText(R.string.check_for_video);
         step_movie.setVisibility(View.INVISIBLE);
         instruction_text.setText(R.string.loading_message);
-        if(savedInstanceState==null){//use activity values at first and savedInstance values for rotation
-            Bundle bundle = getArguments();
-            stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
-            stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
-        }
-        Log.d("StepFragment onCreate",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
-        if(savedInstanceState==null){
-            new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
-        }
-
-
+        Log.d("StepFragment onC Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
         return view;
     }
     public class getInstructionsLong extends AsyncTask<int[], Void, String[]> {
         String StepLongMovieUrl[] = new String[2];  //first element is the long description, second is the movie url
+
         @Override
         protected String[] doInBackground(int[]... integers) {
             try{
                 stepFragRecipeStepValues = integers[0];
+                Log.d("StepFragment doIB str ","Index "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
                 mRecipeIndex = stepFragRecipeStepValues[0];
                 mStepIndex= stepFragRecipeStepValues[1];
-                Log.d("StepFragment doInback",mRecipeIndex+"");
-                Log.d("StepFragment doInback",mStepIndex+"");
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex, mContext);
-                Log.d("StepFragment doInback",StepLongMovieUrl[0]+" "+StepLongMovieUrl[1]);
+                Log.d("StepFragment doIB end","Index"+StepLongMovieUrl[0]+" "+StepLongMovieUrl[1]);
                 return StepLongMovieUrl;
             }catch (Exception e){
                 e.printStackTrace();
@@ -95,7 +85,7 @@ public class StepFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
-            Log.d("StepFragment onPostE",strings[0]+" "+strings[1] );
+            Log.d("StepFragment onPE Index",strings[0]+" "+strings[1] );
             if(strings[0]!=null){
                 Log.d("StepFragment onPost",strings[0] );
                 instruction_text.setText(strings[0]);
@@ -136,9 +126,9 @@ public class StepFragment extends Fragment {
     }
     public void setDescAndURL(int[] intDescAndUrl){
         stepFragRecipeStepValues[0] = intDescAndUrl[0];
-        Log.d("StepFragment rec ",stepFragRecipeStepValues[0]+"");
+        Log.d("StepFragment rec Index",stepFragRecipeStepValues[0]+"");
         stepFragRecipeStepValues[1] = intDescAndUrl[1];
-        Log.d("StepFragment step",stepFragRecipeStepValues[1]+"" );
+        Log.d("StepFragment step Index",stepFragRecipeStepValues[1]+"" );
     }
     @Override
     public void onDestroyView() {
@@ -150,26 +140,65 @@ public class StepFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("saveRecipeKey", stepFragRecipeStepValues[0]);
-        outState.putInt("saveStepKey", stepFragRecipeStepValues[1]);
-        Log.d("StepFragment valueArray",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+        outState.putInt(RECIPE_KEY, stepFragRecipeStepValues[0]);
+        outState.putInt(STEP_KEY, stepFragRecipeStepValues[1]);
+        outState.putBoolean(VALUES_SAVED, true);
+        Log.d("StepFragment onSv Index",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+
     }
+    /*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
             stepFragRecipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
             stepFragRecipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
-            Log.d("StepFragment onActC",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+            valuesSaved =savedInstanceState.getBoolean("valuesSaved");
+            Log.d("StepFragment onAC Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+
         }
     }
+    */
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Bundle bundle = getArguments();
+        stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
+        stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
+        Log.d("StepFragment sIS Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
+        if(savedInstanceState!=null){
+            stepFragRecipeStepValues[0]= savedInstanceState.getInt(RECIPE_KEY);
+            stepFragRecipeStepValues[1]= savedInstanceState.getInt(STEP_KEY);
+            valuesSaved =savedInstanceState.getBoolean(VALUES_SAVED);
+            Log.d("StepFragment oVSR Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+        }
+        if(savedInstanceState==null){
+            Log.d("StepFragment execute", "saved ==nul");
+            new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
+        }
+    }
+    /*
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState!=null){
             stepFragRecipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
             stepFragRecipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
-            Log.d("StepFragment onVSR",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+            valuesSaved =savedInstanceState.getBoolean("valuesSaved");
+            Log.d("StepFragment oVSR Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+        }
+        if(savedInstanceState==null){//use activity values at first and savedInstance values for rotation
+            Log.d("StepFragment sIS Index","before boolean "+valuesSaved );
+            if(!valuesSaved){
+                Bundle bundle = getArguments();
+                stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
+                stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
+                Log.d("StepFragment sIS Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
+            }
+        }
+         if(savedInstanceState==null){
+            new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
         }
     }
+    */
 }
