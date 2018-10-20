@@ -26,16 +26,22 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
     @BindView(R.id.detail_ingredients)TextView ingredientsText;
     @BindView(R.id.step_recycler_view)RecyclerView stepsRecyclerView;
     private StepAdapter mStepAdapter;
-    private int recipeNumber;
+    private int recipeNumber, tabletStep=0;
     String[] stepDummy = {"1","2","3","4","5","1","2","3","4","5","1","2","3","4","5","1","2","3","4","5"};
     private SQLiteDatabase mDb;
+    private static String SAVE_RECIPE = "SAVE_RECIPE", SAVE_STEP="SAVE_STEP";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
-        recipeNumber = getIntent().getIntExtra("recipeIndex", 0);   //pass this value to RecipeStepDetail
+           //pass this value to RecipeStepDetail
+        if(savedInstanceState==null){
+            recipeNumber = getIntent().getIntExtra("recipeIndex", 0);
+            Log.d("recDetail onCreate","if savedInst is null "+recipeNumber);
+        }
+        Log.d("recipeNumber",recipeNumber+"");
         //Configuration config = getResources().getConfiguration();//use to set up video and instructions
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
@@ -44,30 +50,41 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         stepsRecyclerView.setAdapter(mStepAdapter);
         //mStepAdapter.updateSteps(stepDummy);
         // test dummy data before json
-        Log.d("recipeNumber",recipeNumber+"");
+
         new getSteps().execute(recipeNumber);//only get the steps for the selected recipe from RecipeActivity
         new getIngredients().execute(recipeNumber);
         //Intent detailIntent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
         //TODO if a tablet, add a step fragment. Start with step one for video and instructions.
-        if( ! getResources().getBoolean(R.bool.isPhone)){
+        if(!getResources().getBoolean(R.bool.isPhone)&&savedInstanceState==null){//tablet && first time activity is made
+            Log.d("recDetail onCreate","if savedInst is null- if statement rec#"+recipeNumber);
             FragmentManager fmAdd = getSupportFragmentManager();
             StepFragment stepFragmentOnCreate = new StepFragment();
             Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
             bundle.putInt("recipeIndex",recipeNumber);//from getIntExtra
-            bundle.putInt("stepIndex",0 );//add fragment at 0, replace based on step pressed
+            bundle.putInt("stepIndex",tabletStep );//add fragment at 0, replace based on step pressed
             stepFragmentOnCreate.setArguments(bundle);
-            Log.d("recStepDe","saved is null");
             fmAdd.beginTransaction().add(R.id.detail_fragment, stepFragmentOnCreate).commit();
+        }else if(!getResources().getBoolean(R.bool.isPhone)&&savedInstanceState!=null){//tablet && activity is recreated on rotate
+            recipeNumber = savedInstanceState.getInt(SAVE_RECIPE);
+            tabletStep =savedInstanceState.getInt(SAVE_STEP);
+            Log.d("recDetail","saved isn't null rec# "+recipeNumber+" step # "+tabletStep);//used saved step values for movie
+            FragmentManager fmAdd = getSupportFragmentManager();
+            StepFragment stepFragmentOnCreate = new StepFragment();
+            Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
+            bundle.putInt("recipeIndex",recipeNumber);//from getIntExtra
+            bundle.putInt("stepIndex",tabletStep );//onClick passing in step value, replace based on step pressed
+            stepFragmentOnCreate.setArguments(bundle);
+            fmAdd.beginTransaction().replace(R.id.detail_fragment, stepFragmentOnCreate).commit();
         }
     }
-
     @Override
     public void onClick(int index) {
+        tabletStep = index; //save the step index to save the movie index on rotate
         //TODO if tablet use value to replace a fragment bundle for StepFragment
         if(getResources().getBoolean(R.bool.isPhone)){//phone has a seperate activity for step detail
             Intent intent = new Intent(RecipeDetail.this, RecipeStepDetail.class);
-            Log.d("recipeNumberDetail", recipeNumber+"");
-            Log.d("recipeDetailClick", index+"");
+            Log.d("recDetail", "recipe number " +recipeNumber);
+            Log.d("recDetail", "step index "+index);
             intent.putExtra("recipeIndex",recipeNumber);
             intent.putExtra("stepIndex", index);    //step number for long description and movie
             startActivity(intent);
@@ -78,7 +95,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             bundle.putInt("recipeIndex",recipeNumber);//from getIntExtra
             bundle.putInt("stepIndex",index );//onClick passing in step value, replace based on step pressed
             stepFragmentOnCreate.setArguments(bundle);
-            Log.d("recStepDe","saved is null");
+            Log.d("recDetail","saved is null");
             fmAdd.beginTransaction().replace(R.id.detail_fragment, stepFragmentOnCreate).commit();
         }
     }
@@ -118,7 +135,7 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
                 Log.d("ingredientDb","insert value "+insert);
             }
             //getContentResolver().insert(CONTENT_URI, contentValues);
-            Log.d("RecipeDetail post stg", s);
+            //Log.d("recDetail postEx", "string"+s);
         }
     }
     public class getSteps extends AsyncTask<Integer, Void, String[]>{
@@ -140,17 +157,23 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
             if(s!=null){
                 mStepAdapter.updateSteps(s);
             }
-
         }
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("saveRecipe", recipeNumber);
+        outState.putInt(SAVE_RECIPE, recipeNumber);
+        outState.putInt(SAVE_STEP, tabletStep);
+        Log.d("recDetail saveInst ", recipeNumber+" "+tabletStep);
+
+
+
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        recipeNumber =savedInstanceState.getInt("saveRecipe");
+        recipeNumber =savedInstanceState.getInt(SAVE_RECIPE);
+        tabletStep =savedInstanceState.getInt(SAVE_STEP);
+        Log.d("recDetail resInst ", recipeNumber+" "+tabletStep);
     }
 }

@@ -24,7 +24,7 @@
         android:id="@+id/detail_ingredients"
         android:text="@string/loading_ingredients"
         style="@style/text"
-        android:layout_marginLeft="@dimen/left_margin">
+        android:layout_marginStart="@dimen/left_margin">
     </TextView>
     <TextView
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/step_recycler_view"
-        android:layout_marginLeft="@dimen/left_margin">
+        android:layout_marginStart="@dimen/left_margin">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

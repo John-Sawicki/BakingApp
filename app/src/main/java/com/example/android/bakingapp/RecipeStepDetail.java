@@ -15,8 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeStepDetail extends AppCompatActivity {
-    //@BindView(R.id.step_movie)VideoView stepVideo;
-    //@BindView(R.id.no_video_image)ImageView noVideoImage;
     @Nullable @BindView(R.id.instruction_text)TextView instructionText; //only in phone view
     @Nullable @BindView(R.id.next_button) Button nextButton;    //only in phone view
     int recipeIndex; //ex brownies, this stays the same in this activity
@@ -24,7 +22,6 @@ public class RecipeStepDetail extends AppCompatActivity {
     private int[] recipeStepValues = new int[2];//first element is long description second is movie url
     //StepFragment stepFragment;
     private boolean phonePortrait = true, mBooleanRotation =false, mResueFragment;
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -71,7 +68,6 @@ public class RecipeStepDetail extends AppCompatActivity {
             fmAdd.beginTransaction().replace(R.id.movie_step_fragment, stepFragment).commit();
         }
         mBooleanRotation = false;//once back in portrait mode set to false
-
         if(getResources().getBoolean(R.bool.isPhone)){
             Log.d("recStepDe","show button for portrait");
             nextButton.setOnClickListener(new View.OnClickListener() {  //replace the movie and instruction fragment when the next button is pressed
@@ -83,7 +79,6 @@ public class RecipeStepDetail extends AppCompatActivity {
                 }
             });
         }else{
-            //nextButton.setVisibility(View.GONE);  null pointer when configChanges="orientation is removed from the manifest and there is no button in landscape xml
             Log.d("recStepDe","no button for landscape");
         }
     }
@@ -107,7 +102,6 @@ public class RecipeStepDetail extends AppCompatActivity {
         outState.putInt("saveStepKey", recipeStepValues[1]);
         outState.putBoolean("reuseFragment", true);
         Log.d("recStepDe onSS Index",recipeStepValues[0]+" "+recipeStepValues[1]);
-
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -119,11 +113,4 @@ public class RecipeStepDetail extends AppCompatActivity {
         }
         Log.d("recStepDe onRS index",recipeStepValues[0]+" "+recipeStepValues[1]);
     }
-/*
-    @Override
-    protected void onStop() {
-        super.onStop();
-        fmAdd.beginTransaction().remove(stepFragment).commit();//add new fragment on rotation
-    }
-    */
 }

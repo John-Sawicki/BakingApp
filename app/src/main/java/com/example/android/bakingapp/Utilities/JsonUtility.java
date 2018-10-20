@@ -49,7 +49,7 @@ public class JsonUtility {
                 Log.d("stepsUtility recipe", recipes[i]);
             }
             return recipes;
-        }catch (Exception e){
+        }catch (JSONException e){
             e.printStackTrace(); return null;
         }
     }
@@ -67,7 +67,6 @@ public class JsonUtility {
                     measure =oneIngredient.getString("measure");
                     ingredient = oneIngredient.getString("ingredient");
                     ingredients+= quantity+measure+"\t\t"+ingredient+"\n";   //display one ingredient per row
-
             }
             return ingredients;
         }catch (Exception e) {
@@ -97,7 +96,6 @@ public class JsonUtility {
     public static String[] getStepsLong(String rawJSON, int selectedRecipe, int selectedStep, Context context) throws JSONException{
         String mRawJSON = rawJSON;
         String step[] = {"empty", "empty"};//first element is long description second is movie url
-        String urlCheck;
         try {
             JSONArray recipesJSON = new JSONArray(mRawJSON);
             JSONObject recipeJSON = recipesJSON.getJSONObject(selectedRecipe);   //only has 1 recipe
@@ -109,19 +107,14 @@ public class JsonUtility {
             }else{
                 JSONObject oneStep = stepArray.getJSONObject(selectedStep);
                 step[0] = oneStep.getString("description");
-                //urlCheck = oneStep.getString("videoURL");
                 if(oneStep.getString("videoURL")==null){
                     step[1]="empty"; Log.d("stepsUtility", "null url");
                 }else if(oneStep.getString("videoURL")==""){
                     step[1]="empty"; Log.d("stepsUtility", "empty url");
                 }else{
                     step[1]=oneStep.getString("videoURL");
-                    //Log.d("stepsUtility valid", step[1]);
                 }
-                //step[1] = oneStep.getString("videoURL");
-
-                Log.d("stepsUtility Des", step[0]);
-                Log.d("stepsUtility URL", step[1]);
+                Log.d("stepsUtility Des", step[0]+" "+step[1]);
                 return step;
             }
         }catch (Exception e){

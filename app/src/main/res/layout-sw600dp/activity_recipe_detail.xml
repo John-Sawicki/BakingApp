@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/detail_ingredients"
             app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_title"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="@dimen/left_margin"
             android:text="@string/loading_ingredients"/>
         <TextView
             android:layout_width="wrap_content"
@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_step_title"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/left_margin">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 

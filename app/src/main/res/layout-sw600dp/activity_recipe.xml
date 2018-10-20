@@ -17,6 +17,12 @@
             android:text="List of Recipes"
             android:id="@+id/recipe_title_text"
             style="@style/title"/>
+        <View
+            android:layout_width="300dp"
+            android:layout_height="4dp"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
         <!--
         <FrameLayout
             android:layout_width="wrap_content"
@@ -28,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
-            android:numColumns="2"/>
-
+            android:numColumns="2"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 </ScrollView>

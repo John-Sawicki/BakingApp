@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dimen_tv_recipe">300dp</dimen>
     <dimen name="recipe_name_tablet">300dp</dimen>
+    <dimen name="left_margin">24dp</dimen>
 </resources>
