@@ -17,10 +17,7 @@ import butterknife.ButterKnife;
 public class RecipeStepDetail extends AppCompatActivity {
     @Nullable @BindView(R.id.instruction_text)TextView instructionText; //only in phone view
     @Nullable @BindView(R.id.next_button) Button nextButton;    //only in phone view
-    int recipeIndex; //ex brownies, this stays the same in this activity
-    int stepIndex;  //ex step 2; increment to go to the next step by replacing a fragment
     private int[] recipeStepValues = new int[2];//first element is long description second is movie url
-    //StepFragment stepFragment;
     private boolean phonePortrait = true, mBooleanRotation =false, mResueFragment;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -44,7 +41,6 @@ public class RecipeStepDetail extends AppCompatActivity {
         recipeStepValues[0] = getIntent().getIntExtra("recipeIndex",1);
         recipeStepValues[1] = getIntent().getIntExtra("stepIndex",1);
         Log.d("recStepDe Index","onCreate "+recipeStepValues[0]+" "+recipeStepValues[1]);
-
         if(savedInstanceState==null || mBooleanRotation){//don't add a fragment on rotation
             Log.d("recStepDe","rotate? "+mBooleanRotation);
              fmAdd = getSupportFragmentManager();

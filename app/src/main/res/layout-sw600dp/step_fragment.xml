@@ -18,15 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/no_video_text"
-            android:text="There is no video for this step"
+            android:text="@string/there_is_no_video"
             style="@style/title"
             android:visibility="visible"/>
     </FrameLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/instruction_text"
-        android:text="Step Instructions"/>
+        android:text="@string/step_instructions"/>
 </LinearLayout>

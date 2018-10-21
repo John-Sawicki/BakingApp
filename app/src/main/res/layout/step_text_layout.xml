@@ -5,5 +5,4 @@
     android:layout_height="wrap_content"
     android:id="@+id/step_text_view"
     style="@style/recipe_and_Step">
-
 </TextView>

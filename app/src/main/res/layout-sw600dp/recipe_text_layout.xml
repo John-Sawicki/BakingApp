@@ -10,5 +10,4 @@
         android:id="@+id/recipe_text_view"
         style="@style/recipe"
         android:gravity="center_horizontal"/>
-
 </LinearLayout>

@@ -9,6 +9,4 @@
         android:layout_height="wrap_content"
         android:id="@+id/recycler_view"
         android:numColumns="1"/>
-
-
 </FrameLayout>

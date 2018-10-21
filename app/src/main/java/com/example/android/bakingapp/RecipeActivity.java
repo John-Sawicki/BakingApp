@@ -32,23 +32,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-
-        if( getResources().getBoolean(R.bool.isPhone)){ //created a bool resource file for sw600. It is true for phone and false for tablets
-            spanCount=1;
-            //RecipePhoneFragment fragment = new RecipePhoneFragment();
-            //FragmentManager fm = getSupportFragmentManager();
-            //fm.beginTransaction().add(R.id.fm_recipe_recycler, fragment).commit();
-        }else{
-            spanCount=2;
-            //RecipeTabletFragment fragment = new RecipeTabletFragment();
-            //FragmentManager fm = getSupportFragmentManager();
-            //fm.beginTransaction().add(R.id.fm_recipe_recycler, fragment).commit();
-        }
-
-
         ButterKnife.bind(this);
         mRecyclerView =findViewById(R.id.recycler_view);
-        Configuration config = getResources().getConfiguration();
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -80,7 +65,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.R
         }
         @Override
         protected void onPostExecute(String[] strings) {
-            //TODO populate adapter
             //Log.d("RecipeNamePost", strings[1]);
             mRecipeAdapter.updateRecipes(strings);
             super.onPostExecute(strings);

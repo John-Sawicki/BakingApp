@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.bakingapp.RecipeActivity"
-    android:elevation="16dp">
+    tools:context="com.example.android.bakingapp.RecipeActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,22 +13,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="List of Recipes"
+            android:text="@string/list_of_recipes"
             android:id="@+id/recipe_title_text"
             style="@style/title"/>
         <View
             android:layout_width="300dp"
-            android:layout_height="4dp"
+            android:layout_height="@dimen/title_underline"
             android:background="@color/colorPrimary"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"/>
-        <!--
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fm_recipe_recycler"/>
-         -->
-
+            android:layout_marginBottom="@dimen/section_margin"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

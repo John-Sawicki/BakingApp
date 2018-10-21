@@ -45,8 +45,6 @@
             android:layout_marginStart="@dimen/left_margin">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
-
                                                     <FrameLayout
                                                         android:id="@+id/detail_fragment"
                                                         android:layout_width="0dp"

@@ -30,8 +30,6 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-        //not used
-        //TODO get the intent extra for the URL
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();    //https://google.github.io/ExoPlayer/guide.html
         TrackSelector trackSelector = new DefaultTrackSelector(     //site has TrackSelector.Factory
                 new AdaptiveTrackSelection.Factory(bandwidthMeter));
@@ -40,7 +38,6 @@ public class MovieActivity extends AppCompatActivity {
         Uri videoUri = Uri.parse(testUrl);
         DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoPlayerVideo");
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();//not used in site
-        //MediaSource videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, extractorsFactory, null, null);
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoUri);
         mExoPlayer.prepare(videoSource);
 

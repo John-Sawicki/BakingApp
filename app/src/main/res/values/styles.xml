@@ -8,18 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="recipe_and_Step">
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="text">
         <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
         <item name="android:textSize">12sp</item>
+    </style>
+    <style name="text_instructions">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_marginLeft">16dp</item>
     </style>
     <style name="title">
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center_horizontal</item>

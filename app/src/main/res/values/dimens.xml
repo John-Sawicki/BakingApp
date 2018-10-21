@@ -9,5 +9,10 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_text_size">12sp</dimen>
     <dimen name="dimen_tv_recipe_phone">100dp</dimen>
     <dimen name="left_margin">16dp</dimen>
+    <dimen name="title_underline">4dp</dimen>
+    <dimen name="section_margin">16dp</dimen>
+    <dimen name="button_padding">16dp</dimen>
+    <dimen name="movie_height">300dp</dimen>
+    <dimen name="no_movie_height">200dp</dimen>
 
 </resources>
