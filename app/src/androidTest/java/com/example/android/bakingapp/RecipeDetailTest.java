@@ -25,9 +25,9 @@ public class RecipeDetailTest {
             =new ActivityTestRule<>(RecipeActivity.class);
     @Test
     public void ParseJson_RetrieveRecipeList(){
-        //onData(startsWith("Brownies")).inAdapterView(withId(R.id.recycler_view))
-                //.atPosition(1).check(matches(withText("Brownies")));
-        onData(allOf(is(instanceOf(String.class)), is("Brownies"))).perform(click());
+        onData(startsWith("Brownies")).inAdapterView(withId(R.id.recycler_view))
+                .atPosition(1).check(matches(withText("Brownies")));
+        //onData(allOf(is(instanceOf(String.class)), is("Brownies"))).perform(click());
 
     }
 }
