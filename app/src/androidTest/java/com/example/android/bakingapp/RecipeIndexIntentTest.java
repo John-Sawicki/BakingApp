@@ -18,6 +18,7 @@ import static org.hamcrest.core.IsNot.not;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -26,14 +27,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class RecipeIndexIntentTest {
     @Rule
     public IntentsTestRule<RecipeActivity> mTestRule = new IntentsTestRule<>(
             RecipeActivity.class);
-    @Before
+
+
+
+      @Before
     public void stubRecipeIndexIntent(){
-        intending(not(isInternal())).respondWith(new ActivityResult(Activity.RESULT_OK,null));
+          Intent recipeDetail = new Intent();
+          recipeDetail.putExtra("recipeId", 1);//Brownies
+          ActivityResult result = new ActivityResult(Activity.RESULT_OK, recipeDetail);
+          intending(toPackage("com.example.android.bakingapp"))
+                  .respondWith(new ActivityResult(Activity.RESULT_OK,null));
     }
+ /*
     @Test
     public void activityResult_RecipeIndex(){
         Intent indexIntent = new Intent();
@@ -45,5 +55,16 @@ public class RecipeIndexIntentTest {
         onView(withId(R.id.step_recycler_view)).check(matches(withText("Recipe Introduction")));
 
     }
+    */
 
+    @Test
+    public void validateRecipeIntent(){
+        //onView(withId(R.id.recycler_view)).perform(click());
+
+        onView(withId(R.id.recycler_view)).perform(click());
+        intended(allOf(
+                hasExtra("recipeId", 1),
+                toPackage("com.example.android.bakingapp")
+        ));
+    }
 }
