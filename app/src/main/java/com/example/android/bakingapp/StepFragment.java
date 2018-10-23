@@ -1,7 +1,6 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class StepFragment extends Fragment {
-    @BindView(R.id.step_movie)SimpleExoPlayerView step_movie;
+    @BindView(R.id.step_movie)SimpleExoPlayerView mSimpleExoPlayerView;
     @BindView(R.id.no_video_text)TextView no_video_text;
     @BindView(R.id.instruction_text)TextView instruction_text;
     Context mContext;
@@ -41,8 +40,6 @@ public class StepFragment extends Fragment {
     private int[] stepFragRecipeStepValues ={0,0};
     private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
     private boolean phoneLandscape = false, valuesSaved;
-    private boolean ranAsync = false;
-    private getInstructionsLong mGetInstructionsLong;   //aSync task
     private final static String RECIPE_KEY = "saveRecipeKey", STEP_KEY = "saveStepKey", VALUES_SAVED = "valuesSaved";
     public StepFragment( ){
     }
@@ -52,11 +49,10 @@ public class StepFragment extends Fragment {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
         mContext = getActivity().getApplicationContext();
         mUnbinder= ButterKnife.bind(this,view);
-
         no_video_text.setVisibility(View.VISIBLE);
         no_video_text.setText(R.string.check_for_video);
         no_video_text.setText(R.string.check_for_video);
-        step_movie.setVisibility(View.INVISIBLE);
+        mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
         instruction_text.setText(R.string.loading_message);
         Log.d("StepFragment onC Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
         return view;
@@ -95,11 +91,11 @@ public class StepFragment extends Fragment {
                 Log.d("StepFragment noVideo", "no video");
                 no_video_text.setVisibility(View.VISIBLE);
                 no_video_text.setText(R.string.no_video_text);
-                step_movie.setVisibility(View.INVISIBLE);
+                mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
             }else{
                 Log.d("StepFragment Video", strings[1]);
                 no_video_text.setVisibility(View.INVISIBLE);
-                step_movie.setVisibility(View.VISIBLE);
+                mSimpleExoPlayerView.setVisibility(View.VISIBLE);
                 try {
                     BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
                     TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
@@ -107,7 +103,7 @@ public class StepFragment extends Fragment {
                     Uri videoURI = Uri.parse(strings[1]);
                     DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
                     MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
-                    step_movie.setPlayer(mExoPlayer);
+                    mSimpleExoPlayerView.setPlayer(mExoPlayer);
                     mExoPlayer.prepare(mediaSource);
                     mExoPlayer.setPlayWhenReady(true);
                 }catch (Exception e){
@@ -118,10 +114,12 @@ public class StepFragment extends Fragment {
     }
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-        if(mExoPlayer!=null)
+        Log.d("StepFragment video", "onDestroy");
+        if(mExoPlayer!=null){
+            mExoPlayer.stop();
             mExoPlayer.release();
+        }
+        super.onDestroyView();
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
