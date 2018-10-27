@@ -1,12 +1,15 @@
 package com.example.android.bakingapp;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -108,5 +111,19 @@ public class RecipeStepDetail extends AppCompatActivity {
             mResueFragment = savedInstanceState.getBoolean("reuseFragment");
         }
         Log.d("recStepDe onRS index",recipeStepValues[0]+" "+recipeStepValues[1]);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.to_receipe_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemClicked = item.getItemId();
+        if(itemClicked == R.id.menu_to_recipe_act){
+            Log.d("recDetail menu clicked", "go to recipe activity");
+            startActivity(new Intent(this, RecipeActivity.class));
+        }
+        return true;
     }
 }

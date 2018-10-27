@@ -15,4 +15,5 @@
     <string name="list_of_recipes">List of Recipes</string>
     <string name="there_is_no_video">There is no video for this step</string>
     <string name="step_instructions">Step Instructions</string>
+    <string name="go_to_recipes">Go to Recipes</string>
 </resources>

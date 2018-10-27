@@ -16,7 +16,7 @@ import com.example.android.bakingapp.RecipeActivity;
  * Implementation of App Widget functionality.
  */
 public class IngredWidgetProvider extends AppWidgetProvider {
-
+/*
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 String ingredients, int appWidgetId) {
         Intent intent = new Intent(context, RecipeActivity.class);
@@ -54,5 +54,6 @@ public class IngredWidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+    */
 }
 

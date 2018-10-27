@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.utilities.JsonUtility;
@@ -159,5 +161,19 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         recipeNumber =savedInstanceState.getInt(SAVE_RECIPE);
         tabletStep =savedInstanceState.getInt(SAVE_STEP);
         Log.d("recDetail resInst ", recipeNumber+" "+tabletStep);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.to_receipe_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemClicked = item.getItemId();
+        if(itemClicked == R.id.menu_to_recipe_act){
+            Log.d("recDetail menu clicked", "go to recipe activity");
+            startActivity(new Intent(this, RecipeActivity.class));
+        }
+        return true;
     }
 }
