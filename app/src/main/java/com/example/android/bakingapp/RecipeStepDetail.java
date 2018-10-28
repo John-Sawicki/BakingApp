@@ -22,6 +22,8 @@ public class RecipeStepDetail extends AppCompatActivity {
     @Nullable @BindView(R.id.next_button) Button nextButton;    //only in phone view
     private int[] recipeStepValues = new int[2];//first element is long description second is movie url
     private boolean phonePortrait = true, mBooleanRotation =false, mResueFragment;
+    private String TIME_KEY ="timeKey";
+    private long movieTime= 0;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -35,6 +37,7 @@ public class RecipeStepDetail extends AppCompatActivity {
     }
     FragmentManager fmAdd;
     StepFragment stepFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +63,12 @@ public class RecipeStepDetail extends AppCompatActivity {
             Bundle bundle = new Bundle();//pass the values to the fragment to use when it is first created
             recipeStepValues[0]=savedInstanceState.getInt("saveRecipeKey");
             recipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
+            movieTime =savedInstanceState.getLong(TIME_KEY);
             bundle.putInt("recipeIndex",recipeStepValues[0]);
             bundle.putInt("stepIndex",recipeStepValues[1] );
+            bundle.putLong(TIME_KEY,movieTime );
             stepFragment.setArguments(bundle);
-            Log.d("recStepDe Index","saved isn't null "+recipeStepValues[0]+" "+recipeStepValues[1]);
+            Log.d("recStepDe Index","saved isn't null "+recipeStepValues[0]+" "+recipeStepValues[1]+" time "+movieTime);
             fmAdd.beginTransaction().replace(R.id.movie_step_fragment, stepFragment).commit();
         }
         mBooleanRotation = false;//once back in portrait mode set to false
@@ -87,6 +92,7 @@ public class RecipeStepDetail extends AppCompatActivity {
         Bundle bundle2 = new Bundle();//pass the values to the fragment to use when it is first created
         bundle2.putInt("recipeIndex",recStepIndex[0]);
         bundle2.putInt("stepIndex",recStepIndex[1]);
+        bundle2.putLong(TIME_KEY,movieTime );
         Log.d("recStepDe cF Index",recStepIndex[0]+" "+recStepIndex[1]);
         stepFragment.setArguments(bundle2);
         FragmentManager fm = getSupportFragmentManager();
@@ -100,7 +106,13 @@ public class RecipeStepDetail extends AppCompatActivity {
         outState.putInt("saveRecipeKey", recipeStepValues[0]);
         outState.putInt("saveStepKey", recipeStepValues[1]);
         outState.putBoolean("reuseFragment", true);
-        Log.d("recStepDe onSS Index",recipeStepValues[0]+" "+recipeStepValues[1]);
+        Bundle videoInfo = getIntent().getExtras();
+        if(videoInfo!=null){
+            movieTime = videoInfo.getLong(TIME_KEY);
+            Log.d("recStepDe onSaveI", "bundle isn't null "+movieTime);
+        }
+        outState.putLong(TIME_KEY,movieTime);
+        Log.d("recStepDe onSS Index",recipeStepValues[0]+" "+recipeStepValues[1]+" time "+movieTime);
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -109,8 +121,9 @@ public class RecipeStepDetail extends AppCompatActivity {
             recipeStepValues[0]= savedInstanceState.getInt("saveRecipeKey");
             recipeStepValues[1]= savedInstanceState.getInt("saveStepKey");
             mResueFragment = savedInstanceState.getBoolean("reuseFragment");
+            movieTime = savedInstanceState.getLong(TIME_KEY, 0);
         }
-        Log.d("recStepDe onRS index",recipeStepValues[0]+" "+recipeStepValues[1]);
+        Log.d("recStepDe onRS index",recipeStepValues[0]+" "+recipeStepValues[1]+" time "+movieTime);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,5 +138,11 @@ public class RecipeStepDetail extends AppCompatActivity {
             startActivity(new Intent(this, RecipeActivity.class));
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("recStepDe onReusme",movieTime+"");
     }
 }

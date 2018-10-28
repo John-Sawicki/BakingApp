@@ -30,7 +30,8 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
     private StepAdapter mStepAdapter;
     private int recipeNumber, tabletStep=0;
     private SQLiteDatabase mDb;
-    private static String SAVE_RECIPE = "SAVE_RECIPE", SAVE_STEP="SAVE_STEP";
+    private long movieTime= 0;
+    private static String SAVE_RECIPE = "SAVE_RECIPE", SAVE_STEP="SAVE_STEP", TIME_KEY ="timeKey";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +154,8 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_RECIPE, recipeNumber);
         outState.putInt(SAVE_STEP, tabletStep);
+
+
         Log.d("recDetail saveInst ", recipeNumber+" "+tabletStep);
     }
     @Override
@@ -160,7 +163,8 @@ public class RecipeDetail extends AppCompatActivity implements StepAdapter.StepO
         super.onRestoreInstanceState(savedInstanceState);
         recipeNumber =savedInstanceState.getInt(SAVE_RECIPE);
         tabletStep =savedInstanceState.getInt(SAVE_STEP);
-        Log.d("recDetail resInst ", recipeNumber+" "+tabletStep);
+        movieTime = savedInstanceState.getLong(TIME_KEY);
+        Log.d("recDetail resInst ", recipeNumber+" "+tabletStep+" time "+movieTime);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
