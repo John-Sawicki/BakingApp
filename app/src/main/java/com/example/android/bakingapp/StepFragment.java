@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.utilities.JsonUtility;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -39,10 +41,13 @@ public class StepFragment extends Fragment {
     private Unbinder mUnbinder;
     private int mRecipeIndex=0; //ex brownies, this stays the same in this activity
     private int mStepIndex=0;  //ex step 2; increment to go to the next step by replacing a fragment
+    private int playbackState = Player.STATE_READY;  //int 3 represents modifier of the exoplayer
+    private boolean playMovie = true;
     private int[] stepFragRecipeStepValues ={0,0};
     private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590129a5_10-mix-in-melted-chocolate-for-frosting-yellow-cake/10-mix-in-melted-chocolate-for-frosting-yellow-cake.mp4";
     private boolean phoneLandscape = false, valuesSaved;
-    private final static String RECIPE_KEY = "saveRecipeKey", STEP_KEY = "saveStepKey", VALUES_SAVED = "valuesSaved", TIME_KEY ="timeKey";
+    private final static String RECIPE_KEY = "saveRecipeKey", STEP_KEY = "saveStepKey", VALUES_SAVED = "valuesSaved",
+            TIME_KEY ="timeKey", KEY_VIDEO_STATE="KEY_VIDEO_STATE";
     public StepFragment( ){
     }
     @Nullable
@@ -56,7 +61,7 @@ public class StepFragment extends Fragment {
         no_video_text.setText(R.string.check_for_video);
         mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
         instruction_text.setText(R.string.loading_message);
-        Log.d("StepFragment onC Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]+" time "+movieTime);
+        Log.d("RSD StepFrag onC Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]+" time "+movieTime);
         return view;
     }
     public class getInstructionsLong extends AsyncTask<int[], Void, String[]> {
@@ -65,37 +70,37 @@ public class StepFragment extends Fragment {
         protected String[] doInBackground(int[]... integers) {
             try{
                 stepFragRecipeStepValues = integers[0];
-                Log.d("StepFragment doIB str ","Index "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
+                Log.d("RSD StepFrag doIB str ","Index "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
                 mRecipeIndex = stepFragRecipeStepValues[0];
                 mStepIndex= stepFragRecipeStepValues[1];
                 String jsonStringFromWeb = JsonUtility.getResponseFromSite(JsonUtility.JsonUrl);
                 StepLongMovieUrl = JsonUtility.getStepsLong(jsonStringFromWeb, mRecipeIndex, mStepIndex, mContext);
-                Log.d("StepFragment doIB end","Index"+StepLongMovieUrl[0]+" "+StepLongMovieUrl[1]);
+                Log.d("RSD StepFrag doIB end","Index"+StepLongMovieUrl[0]+" "+StepLongMovieUrl[1]);
                 return StepLongMovieUrl;
             }catch (Exception e){
                 e.printStackTrace();
-                Log.d("StepFragment doInback","return null");
+                Log.d("RSD StepFrag doInback","return null");
                 return null;
             }
         }
         @Override
         protected void onPostExecute(String[] strings) {//first element is long description second is movie url
-            Log.d("StepFragment onPE Index",strings[0]+" "+strings[1] );
+            Log.d("RSD StepFrag onPE Index",strings[0]+" "+strings[1] );
             if(strings[0]!=null){
-                Log.d("StepFragment onPost",strings[0] );
+                Log.d("RSD StepFrag onPost",strings[0] );
                 instruction_text.setText(strings[0]);
             }else{
-                Log.d("StepFragment onPost", "no instructions");
+                Log.d("RSD StepFrag onPost", "no instructions");
                 instruction_text.setText(R.string.no_instruction_text);
             }
             if(strings[1]!=null)Log.d("StepFragment Post 1  ",strings[1] );
             if(strings[1]==null || strings[1]==""||strings[1]=="empty"|| strings[1].length()==0){    //valid urls start with http
-                Log.d("StepFragment noVideo", "no video");
+                Log.d("RSD StepFrag noVideo", "no video");
                 no_video_text.setVisibility(View.VISIBLE);
                 no_video_text.setText(R.string.no_video_text);
                 mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
             }else{
-                Log.d("StepFragment Video", strings[1]);
+                Log.d("RSD StepFrag Video", strings[1]);
                 no_video_text.setVisibility(View.INVISIBLE);
                 mSimpleExoPlayerView.setVisibility(View.VISIBLE);
                 try {
@@ -107,24 +112,34 @@ public class StepFragment extends Fragment {
                     MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoURI);
                     mSimpleExoPlayerView.setPlayer(mExoPlayer);
                     mExoPlayer.prepare(mediaSource);
-                    mExoPlayer.setPlayWhenReady(true);
-                    Log.d("StepFragmentVideo", "time post execute "+movieTime);
+                    if(playbackState !=Player.STATE_READY) {
+                        playMovie = false;
+                        Log.d("RSD StepFrag Video", "state "+playbackState+" play when ready "+playMovie);
+                    }
+                    mExoPlayer.setPlayWhenReady(playMovie);
+                    Log.d("RSD StepFrag Video", "time post execute "+movieTime+" play when ready "+playMovie);
                     mExoPlayer.seekTo(movieTime);//when the screen is rotated, it will move to the time saved on rotation
+
                 }catch (Exception e){
-                    Log.e("StepFragment catch", " exoplayer error " + e.toString());
+                    Log.e("RSD StepFrag catch", " exoplayer error " + e.toString());
                 }
             }
         }
     }
     @Override
     public void onDestroyView() {
-        Log.d("StepFragment video", "onDestroy");
+        //Log.d("StepFragment video", "onDestroy");
         if(mExoPlayer!=null){
-            mExoPlayer.stop();
+            mSimpleExoPlayerView.getPlayer();
+            mSimpleExoPlayerView.getPlayer().stop();
+            mSimpleExoPlayerView.getPlayer().release();
             mExoPlayer.release();
+            mSimpleExoPlayerView= null;
+            mExoPlayer= null;
         }
         super.onDestroyView();
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -132,7 +147,7 @@ public class StepFragment extends Fragment {
         outState.putInt(STEP_KEY, stepFragRecipeStepValues[1]);
         outState.putBoolean(VALUES_SAVED, true);
 
-        Log.d("StepFragment onSv Index",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
+        Log.d("RSD StepFrag onSv Index",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
 
     }
     @Override
@@ -142,29 +157,34 @@ public class StepFragment extends Fragment {
         stepFragRecipeStepValues[0] = bundle.getInt("recipeIndex",0);
         stepFragRecipeStepValues[1]= bundle.getInt("stepIndex",0);
         movieTime = bundle.getLong(TIME_KEY, 0);
-        Log.d("StepFragment sIS Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]+" time "+movieTime);
+        playbackState= bundle.getInt(KEY_VIDEO_STATE, 0);
+        Log.d("RSD StepFrag sIS Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]+" time "+movieTime+" state "+playbackState);
         if(savedInstanceState!=null){
             stepFragRecipeStepValues[0]= savedInstanceState.getInt(RECIPE_KEY);
             stepFragRecipeStepValues[1]= savedInstanceState.getInt(STEP_KEY);
             valuesSaved =savedInstanceState.getBoolean(VALUES_SAVED);
-            Log.d("StepFragment oVSR Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
+            Log.d("RSD StepFrag oVSR Index",valuesSaved+" "+stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1] );
         }
         if(savedInstanceState==null){
-            Log.d("StepFragment execute", "saved ==nul");
+            Log.d("RSD StepFrag execute", "saved ==nul");
             new getInstructionsLong().execute(stepFragRecipeStepValues);    //first element is the long description, second is the movie url
         }
     }
-
     @Override
     public void onPause() {
         super.onPause();
-        if(mExoPlayer!=null) movieTime = mExoPlayer.getContentPosition();
+        if(mExoPlayer!=null){
+            movieTime = mExoPlayer.getContentPosition();
+            playbackState = mExoPlayer.getPlaybackState();
+            mExoPlayer.setPlayWhenReady(false);
+
+        }
         Bundle videoInfo = new Bundle();
         videoInfo.putLong(TIME_KEY, movieTime);
+        videoInfo.putInt(KEY_VIDEO_STATE,playbackState );
         Intent intent = getActivity().getIntent();
-        intent.putExtras(videoInfo );
+        intent.putExtras(videoInfo);
         //intent.putExtras(videoInfo);    //pass to activity before saveInstance
-        Log.d("StepFragment time", movieTime+"");
+        Log.d("RSD StepFrag video", "time "+movieTime+" state "+playbackState);
     }
-
 }
