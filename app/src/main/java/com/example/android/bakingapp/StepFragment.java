@@ -130,22 +130,18 @@ public class StepFragment extends Fragment {
     public void onDestroyView() {
         //Log.d("StepFragment video", "onDestroy");
         if(mExoPlayer!=null){
-            mSimpleExoPlayerView.getPlayer();
-            mSimpleExoPlayerView.getPlayer().stop();
-            mSimpleExoPlayerView.getPlayer().release();
             mExoPlayer.release();
-            mSimpleExoPlayerView= null;
             mExoPlayer= null;
         }
         super.onDestroyView();
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(RECIPE_KEY, stepFragRecipeStepValues[0]);
         outState.putInt(STEP_KEY, stepFragRecipeStepValues[1]);
         outState.putBoolean(VALUES_SAVED, true);
+        //github test
 
         Log.d("RSD StepFrag onSv Index",stepFragRecipeStepValues[0]+" "+stepFragRecipeStepValues[1]);
 
